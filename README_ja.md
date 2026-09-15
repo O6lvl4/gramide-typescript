@@ -21,7 +21,7 @@ gramide_typescript map .   --budget 1024 --task "fix the retry"
 
 ## 読めるもの
 
-`.ts` `.mts` `.cts` を TypeScript 5.9 として読む。
+`.ts` `.mts` `.cts` を、そして第二の定義として `.tsx` を、TypeScript 5.9 として読む。
 [gramide-javascript](https://github.com/O6lvl4/gramide-javascript) が読むものすべてに加え、
 型注釈、制約・既定値・変性付きのジェネリクス、interface、型エイリアス、enum、namespace と
 ambient module、`declare`、`abstract`、アクセス修飾子と `readonly`、パラメータプロパティ、
@@ -29,7 +29,8 @@ ambient module、`declare`、`abstract`、アクセス修飾子と `readonly`、
 `export =`、デコレータ、`as`、`satisfies`、`!` アサーション、`<T>x` アサーション。型の側では
 union・intersection、条件型・mapped 型、`infer`、`keyof` / `typeof` / `unique symbol`、名前と
 rest 付きのタプル、関数型とコンストラクタ型、テンプレートリテラル型、`import("m").T`、
-型述語。JSX はまだ読まない。`.tsx` はこのパッケージのものではない。
+型述語。`.tsx` は同じ文法で、式が立てる位置に JSX を許し `<T>x` アサーションを外して読む。
+コンパイラがそうするのと同じ。タグは型引数を持てる(`<Select<string[]> multiple>`)。
 
 JavaScript パッケージと同じく、TypeScript でないものは拒否するが、コンパイラが拒否する
 ファイルをすべて拒否するとは約束しない。gramide が拒否したファイルはコンパイラにとっても
@@ -45,9 +46,13 @@ TypeScript コンパイラの 5.9.3 タグの `src/` 配下の全 `.ts` と、�
 |---|---:|---:|---|
 | TypeScript 5.9.3 `src/` | 701 | 20.6 MB | 全件パース。48,691 宣言すべてが参照と一致 |
 | TypeScript 5.9.3 `lib/*.d.ts` | 102 | 3.7 MB | 全件パース。26,413 宣言すべてが参照と一致 |
+| MUI `docs/data/{material,joy}/components/**/*.tsx`(`053c4319`) | 538 | 1.0 MB | 全件パース。1,378 宣言すべてが参照と一致 |
+| Excalidraw `packages/excalidraw/**/*.tsx`(`a9186480`) | 261 | 2.6 MB | 全件パース。2,848 宣言すべてが参照と一致 |
 
 ([証拠](docs/evidence/corpus-typescript-src.json)、
-[証拠](docs/evidence/corpus-typescript-lib-dts.json))。ここでの宣言とは、JavaScript
+[証拠](docs/evidence/corpus-typescript-lib-dts.json)、
+[証拠](docs/evidence/corpus-mui-docs-tsx.json)、
+[証拠](docs/evidence/corpus-excalidraw-tsx.json))。ここでの宣言とは、JavaScript
 パッケージが列挙するものすべてに加え、interface・型エイリアス・enum・namespace、メソッドと
 プロパティのシグネチャ、そして namespace の中の名前を namespace で修飾したもの
 (`ts.Parser.parse`)。コンパイラ `src/` へのバッチ `check` は 8 コアで約 340 MB/s。
@@ -69,7 +74,8 @@ CI が回す fixture は [ci/README.md](ci/README.md) に。
   置き換える JavaScript の名前の下に置くので、2 つの文法は 2 つのテーブルを持つ 1 つの文法。
 - **`src/symbols.almd`** — JavaScript の規則に interface・型エイリアス・enum・namespace を
   加えたもの。namespace は中身を修飾し、ambient module と global 拡張は修飾しない。
-- **`src/table.almd`** — `gen-table` が生成。古ければ CI が落ちる。
+- **`src/table.almd`** と **`src/table_tsx.almd`** — `gen-table` と `gen-table-tsx` が生成。
+  どちらかが古ければ CI が落ちる。
 
 ## 検証
 

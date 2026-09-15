@@ -2,7 +2,7 @@
 
 Run `bash ci/check.sh` from a checkout with Almide and Node installed, or set
 `ALMIDE_BIN` to an absolute compiler path. This runs the package's tests,
-builds its own binary from `cli/main.almd`, fails if `src/table.almd` is not
+builds its own binary from `cli/main.almd`, fails if `src/table.almd` or `src/table_tsx.almd` is not
 what the grammar compiles to, drives the binary through temporary fixtures,
 and compares `symbols` with `ci/reference_ranges.mjs`, an oracle over the
 TypeScript compiler's own parser that knows nothing of gramide — on a UTF-8

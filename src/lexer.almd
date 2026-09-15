@@ -9,9 +9,12 @@ import gramide.tree
 import gramide.lex
 import gramide_javascript.lexer as js
 
-fn tables() -> js.ScanTables = js.prepare(true)
+// `.ts`: `<T>x` is an assertion, so no `<` opens an element; `.tsx`: it does
+fn tables() -> js.ScanTables = js.prepare(true, false)
+fn tables_tsx() -> js.ScanTables = js.prepare(true, true)
 fn scan_prepared(source: String, tables: js.ScanTables, recovering: Bool) -> Result[List[tree.Token], lex.LexError] = js.scan_prepared(source, tables, recovering)
 fn scan(source: String, recovering: Bool) -> Result[List[tree.Token], lex.LexError] = scan_prepared(source, tables(), recovering)
+fn scan_tsx(source: String, recovering: Bool) -> Result[List[tree.Token], lex.LexError] = scan_prepared(source, tables_tsx(), recovering)
 
 test "a closing generic bracket is not half of a shift operator" {
   let src = "let x: Map<string, Array<T>> = a >> b; y >>>= 1; z >= 2"

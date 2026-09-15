@@ -1,8 +1,9 @@
 {
-  "src/grammar.almd": 2,
+  "src/grammar.almd": 3,
   "src/lexer.almd": 1,
   "src/mod.almd": 1,
   "src/symbols.almd": 1,
   "src/table.almd": 1,
+  "src/table_tsx.almd": 1,
   "src/types.almd": 1
 }

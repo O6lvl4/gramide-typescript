@@ -24,5 +24,10 @@ with tempfile.TemporaryDirectory() as tmp:
         run("check", broken, code=1)
         recovered = run("outline", broken)
         assert "Box.read" in recovered and "Box.also" in recovered and "function f" in recovered, recovered
+    tsx = root / "view.tsx"
+    tsx.write_text("export function View<T>({ items }: { items: T[] }) {\n  return <ul>{items.map((i) => <li key={String(i)}>{i}</li>)}</ul>\n}\nconst pick = <T,>(a: T) => <Select<T> value={a} />\n")
+    run("check", tsx)
+    doc = json.loads(run("symbols", tsx))
+    assert doc["lang"] == "tsx" and doc["complete"] is True and [s["name"] for s in doc["symbols"] if s["kind"] == "function"] == ["View", "pick"], doc
     assert run("version").splitlines()[0].startswith("gramide_typescript ")
-print("CLI smoke passed: .ts .mts .cts check, outline, symbols and recovered outline")
+print("CLI smoke passed: .ts .mts .cts .tsx check, outline, symbols and recovered outline")

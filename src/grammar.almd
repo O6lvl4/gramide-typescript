@@ -11,7 +11,7 @@
 // token here: the comparison and shift levels, and the assignment operators
 // that begin with it.
 //
-// Not read yet: JSX. A `.tsx` file is not this package's.
+// A `.tsx` file is the same grammar with JSX and without the `<T>x` assertion.
 import gramide.names as nametable
 import gramide.parser
 import gramide.parser.{ tok, lit, keep, r, seq, alt, rep, opt, wrap, field, nest, ahead, nott, prec, leftf, lits, keeps, nothing, grammar, recover }
@@ -135,6 +135,9 @@ fn overrides() -> List[(String, parser.Rule)] = [
 
 fn rules() -> parser.Grammar = grammar(js.START, js.with_overrides(js.base_rules(), overrides() + types.rules()))
 
+// `.tsx`: JSX takes the `<` an assertion would begin with
+fn rules_tsx() -> parser.Grammar = grammar(js.START, js.with_overrides(js.base_rules(), overrides() + types.rules() + [("extra_primary", nothing())]))
+
 // ── tests ──────────────────────────────────────────────────────────────
 fn parse_src(src: String) -> Result[parser.Parsed, String] = {
   let toks = lexer.scan(src, false) |> result.map_err((e) => "lex " + int.to_string(e.line) + ":" + int.to_string(e.col) + " " + e.message)!
@@ -201,4 +204,18 @@ test "what does not parse says where" {
     ok(_) => assert(false),
     err(e) => assert(string.starts_with(e, "2:")),
   }
+}
+
+fn top_kinds_tsx(src: String) -> List[String] = {
+  let toks = match lexer.scan_tsx(src, false) { ok(t) => t, err(_) => [] }
+  match parser.parse(rules_tsx(), bytes.from_string(src), toks) {
+    ok(p) => list.map(p.root.kids, (k) => nametable.name_at(p.names, k.kind)),
+    err(e) => ["ERROR " + parser.format_failure(e)],
+  }
+}
+
+test "a .tsx file reads JSX and generic arrows, and a .ts file reads assertions" {
+  assert_eq(top_kinds_tsx("const App = ({ items }: Props) => (\n  <ul>{items.map((i) => <li key={i}>{i}</li>)}</ul>\n)\nconst id = <T,>(x: T): T => x\nconst g = <T extends object>(x: T) => x\n"),
+    ["const_declaration", "const_declaration", "const_declaration"])
+  assert_eq(top_kinds("const y = <number>x\n"), ["const_declaration"])
 }

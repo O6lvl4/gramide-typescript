@@ -13,11 +13,16 @@ import gramide.lex
 import self.lexer
 import self.symbols
 import self.table
+import self.table_tsx
 
-let VERSION = "0.1.0"
+let VERSION = "0.2.0"
 
 fn prepare_lexer() -> package_api.Tokenizer = {
   let prepared = lexer.tables()
+  (source, recovering) => lexer.scan_prepared(source, prepared, recovering)
+}
+fn prepare_lexer_tsx() -> package_api.Tokenizer = {
+  let prepared = lexer.tables_tsx()
   (source, recovering) => lexer.scan_prepared(source, prepared, recovering)
 }
 
@@ -25,4 +30,13 @@ fn definition() -> package_api.Definition = package_api.Definition {
   id: "typescript", package_name: "gramide-typescript", version: VERSION, extensions: [".ts", ".mts", ".cts"],
   capabilities: ["check", "tokens", "parse", "outline", "symbols", "symbols-recovered", "tags", "map"],
   lexer: () => prepare_lexer(), grammar: () => table.compiled(), sep: ".", symbols: symbols.symbol_rules()
+}
+
+// `.tsx`: the same language with JSX, and without the `<T>x` assertion that
+// JSX takes the `<` of. A package of its own to the host, because a file
+// resolves to one package by its extension.
+fn tsx() -> package_api.Definition = package_api.Definition {
+  id: "tsx", package_name: "gramide-tsx", version: VERSION, extensions: [".tsx"],
+  capabilities: ["check", "tokens", "parse", "outline", "symbols", "symbols-recovered", "tags", "map"],
+  lexer: () => prepare_lexer_tsx(), grammar: () => table_tsx.compiled(), sep: ".", symbols: symbols.symbol_rules()
 }

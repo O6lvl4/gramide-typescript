@@ -12,7 +12,7 @@ import self.lexer
 import env
 import fs
 
-fn packages() -> List[package_api.Definition] = [pkg.definition()]
+fn packages() -> List[package_api.Definition] = [pkg.definition(), pkg.tsx()]
 
 // Eight byte-balanced slices of the file list, checked in parallel and
 // answered in list order. This block stands in the binary rather than in the
@@ -65,6 +65,7 @@ effect fn main() -> Unit = {
   // the one command the shipped binary does not have: the grammar, compiled and
   // written down, which is what src/table.almd is
   if list.first(argv) == some("gen-table") then println(tables.render("typescript", grammar.rules()))
+  else if list.first(argv) == some("gen-table-tsx") then println(tables.render("tsx", grammar.rules_tsx()))
   else if list.first(argv) == some("lex-check") then lex_check(list.drop(argv, 1))
   else match cli.batch_of(argv) {
     some((cmd, paths)) => cli.report(parallel(cmd, paths)!),
