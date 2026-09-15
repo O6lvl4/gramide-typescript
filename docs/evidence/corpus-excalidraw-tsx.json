@@ -2,7 +2,7 @@
   "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
   "node": "v22.23.1",
   "typescript": "5.9.3",
-  "binary_sha256": "7baec8a26da91abac9b51ae445ebc808ad7db88aae6fce761ee5584e23d400b1",
+  "binary_sha256": "1db065ac3b8591c35449484a521900a103053b8719b1d76d969aefef4804c5a5",
   "root": "/Users/o6lvl4/workspace/github.com/O6lvl4/almide-references/excalidraw/packages/excalidraw",
   "ext": [
     ".tsx"
@@ -10,8 +10,8 @@
   "excluded": [],
   "files": 261,
   "bytes": 2595979,
-  "check_seconds": 0.022,
-  "megabytes_per_second": 117.4,
+  "check_seconds": 0.025,
+  "megabytes_per_second": 105.9,
   "reference_rejected": [],
   "gramide_rejected": [],
   "range_mismatch": [],

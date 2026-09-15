@@ -2,7 +2,7 @@
   "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
   "node": "v22.23.1",
   "typescript": "5.9.3",
-  "binary_sha256": "7baec8a26da91abac9b51ae445ebc808ad7db88aae6fce761ee5584e23d400b1",
+  "binary_sha256": "1db065ac3b8591c35449484a521900a103053b8719b1d76d969aefef4804c5a5",
   "root": "/Users/o6lvl4/workspace/github.com/O6lvl4/almide-references/material-ui/docs/data",
   "ext": [
     ".tsx"
@@ -10,8 +10,8 @@
   "excluded": [],
   "files": 538,
   "bytes": 1028411,
-  "check_seconds": 0.021,
-  "megabytes_per_second": 49.5,
+  "check_seconds": 0.024,
+  "megabytes_per_second": 42.2,
   "reference_rejected": [],
   "gramide_rejected": [],
   "range_mismatch": [],
