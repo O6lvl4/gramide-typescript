@@ -1,0 +1,8 @@
+[package]
+name = "gramide_typescript"
+version = "0.1.0"
+edition = "2026"
+
+[dependencies]
+gramide = { git = "https://github.com/O6lvl4/gramide", tag = "v0.1.2" }
+gramide_javascript = { git = "file:///Users/o6lvl4/workspace/github.com/O6lvl4/gramide-javascript", branch = "main" }

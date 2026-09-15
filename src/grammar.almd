@@ -1,0 +1,204 @@
+// grammar — the TypeScript grammar: the JavaScript grammar with its
+// extension points filled and its declarations extended.
+//
+// Every rule the JavaScript package left as `seq([])` or `nothing()` gets
+// its TypeScript body here: type annotations on bindings, parameters and
+// members; type parameters and arguments; the modifiers a class member,
+// a parameter or a class may carry; `declare` before a declaration;
+// `import type` and `export =`; the `!`, `as` and `satisfies` operators and
+// the `<T>x` assertion. Interfaces, type aliases, enums and namespaces are
+// added as declarations. Two rules are replaced outright because `>` is one
+// token here: the comparison and shift levels, and the assignment operators
+// that begin with it.
+//
+// Not read yet: JSX. A `.tsx` file is not this package's.
+import gramide.names as nametable
+import gramide.parser
+import gramide.parser.{ tok, lit, keep, r, seq, alt, rep, opt, wrap, field, nest, ahead, nott, prec, leftf, lits, keeps, nothing, grammar, recover }
+import gramide_javascript.grammar as js
+import gramide_javascript.expressions as js_expressions
+import gramide_javascript.common
+import gramide_javascript.common.{ ident, sep, osep, eos, items, items1 }
+import gramide_javascript.declarations as decls
+import self.lexer
+import self.types
+
+// A word that is a modifier only when what it modifies follows: `readonly x`
+// is a modified parameter, `readonly: T` is a parameter named readonly.
+fn keyword_before(words: List[String], next: parser.Rule) -> parser.Rule =
+  rep(seq([lits(words), ahead(alt([lits(words), next]))]))
+
+let MODIFIERS = ["static", "async", "get", "set", "public", "private", "protected", "readonly", "abstract", "override", "declare", "accessor"]
+
+fn overrides() -> List[(String, parser.Rule)] = [
+  // ── the extension points ──────────────────────────────────────────────
+  ("type_annotation", opt(wrap("type_annotation", seq([lit(":"), r("type")])))),
+  ("return_annotation", opt(wrap("return_annotation", seq([lit(":"), r("return_type")])))),
+  ("type_parameters", opt(wrap("type_parameters", seq([lit("<"), items1(r("type_parameter")), lit(">")])))),
+  ("type_parameter", wrap("type_parameter", seq([
+    keyword_before(["const", "in", "out"], r("name")), field("name", r("name")),
+    opt(seq([lit("extends"), r("type")])), opt(seq([lit("="), r("type")]))
+  ]))),
+  ("type_arguments", opt(wrap("type_arguments", seq([lit("<"), items1(r("type")), lit(">")])))),
+  ("binding_marks", opt(lits(["?", "!"]))),
+  ("param_modifiers", keyword_before(["public", "private", "protected", "readonly", "override"], alt([r("name"), lits(["{", "[", "...", "this"])]))),
+  ("class_modifiers", keyword_before(["abstract"], lit("class"))),
+  ("class_heritage", seq([
+    opt(seq([lit("extends"), r("postfix_expr"), r("type_arguments")])),
+    opt(seq([lit("implements"), items1(r("type"))]))
+  ])),
+  ("member_modifiers", rep(alt(list.map(MODIFIERS, (w) => decls.modifier(w)) + [lit("*")]))),
+  // an overload, an abstract method, an ambient function: a signature with no body
+  ("method_body_extra", ahead(alt([sep(), lit("}"), tok("eof")]))),
+  ("extra_member", wrap("index_signature", seq([
+    keyword_before(MODIFIERS, lit("[")), lit("["), r("name"), lit(":"), r("type"), lit("]"), r("type_annotation"), ahead(alt([sep(), lit("}")]))
+  ]))),
+  // `class implements I {}`: the word after `class` is a clause, not a name
+  ("class_expression", wrap("class_expression", seq([
+    r("decorators"), lit("class"), opt(field("name", seq([nott(lits(["implements", "extends"])), r("name")]))),
+    r("type_parameters"), r("class_heritage"), r("class_body")
+  ]))),
+  ("parameter", wrap("parameter", seq([
+    r("decorators"), r("param_modifiers"), opt(lit("...")),
+    alt([field("name", alt([r("name"), lit("this")])), r("object_pattern"), r("array_pattern")]),
+    r("binding_marks"), r("type_annotation"), opt(seq([lit("="), r("assignment")]))
+  ]))),
+  ("import_kind", opt(seq([lit("type"), ahead(alt([lit("{"), r("name"), lit("*")]))]))),
+  ("export_extra", alt([
+    seq([lit("="), r("assignment"), eos()]),
+    seq([lit("as"), lit("namespace"), r("name"), eos()]),
+    seq([lit("import"), r("import_equals")]),
+    seq([lit("default"), r("interface_declaration")]),
+  ])),
+  ("extra_statement", seq([lit("import"), r("import_equals")])),
+  // `declare` before a declaration, and not the word used as a name
+  ("declaration_prefix", opt(seq([lit("declare"), nott(alt([lits(["(", ".", "?.", "=", ":", ";", ",", ")", "]", "}", "!", "?", "=>"]), tok("newline")]))]))),
+  ("extra_declaration", alt([
+    r("interface_declaration"), r("type_alias"), r("enum_declaration"), r("namespace_declaration"),
+  ])),
+  ("extra_primary", wrap("type_assertion", seq([lit("<"), r("type"), lit(">"), r("unary")]))),
+  ("suffix_extra", lit("!")),
+  ("arrow_tail_ahead", alt([lit("=>"), lit(":")])),
+  ("postfix", nest("postfix", seq([
+    r("postfix_expr"), opt(keeps(["++", "--"])),
+    rep(wrap("as_expression", seq([lits(["as", "satisfies"]), alt([keep("const"), r("type")])])))
+  ]))),
+
+  // ── `>` is one token: the levels that join it back ────────────────────
+  ("binary", prec("binary", r("relational"), [
+    keep("??"), keep("||"), keep("&&"), keep("|"), keep("^"), keep("&"), keeps(["==", "!=", "===", "!=="])
+  ])),
+  ("relational", leftf("binary", r("shift"), alt([keeps(["<", "<=", "instanceof", "in"]), seq([keep(">"), opt(keep("="))])]))),
+  ("shift", leftf("binary", r("additive"), alt([keep("<<"), seq([keep(">"), keep(">"), opt(keep(">"))])]))),
+  ("assignment", alt([
+    seq([r("arrow_ahead"), r("arrow_function")]),
+    wrap("yield", seq([lit("yield"), opt(seq([opt(lit("*")), r("assignment")]))])),
+    nest("assignment", seq([r("conditional"), opt(seq([
+      field("operator", alt([keeps(js_expressions.ASSIGN_OPS), wrap("operator", seq([lit(">"), lit(">"), opt(lit(">")), lit("=")]))])),
+      r("assignment")
+    ]))])),
+  ])),
+
+  // ── the declarations TypeScript adds ──────────────────────────────────
+  ("import_equals", wrap("import_equals", seq([
+    opt(lit("type")), field("name", r("name")), lit("="),
+    alt([seq([lit("require"), lit("("), tok("string"), lit(")")]), r("entity_name")]), eos()
+  ]))),
+  ("interface_declaration", wrap("interface_declaration", seq([
+    r("declaration_prefix"), lit("interface"), field("name", r("name")), r("type_parameters"),
+    opt(seq([lit("extends"), items1(r("type"))])), r("object_type")
+  ]))),
+  // the `;` that may follow belongs to the statement list, not to the alias
+  ("type_alias", wrap("type_alias", seq([
+    r("declaration_prefix"), lit("type"), field("name", r("name")), r("type_parameters"), lit("="), r("type"), ahead(eos())
+  ]))),
+  ("enum_declaration", wrap("enum_declaration", seq([
+    r("declaration_prefix"), opt(lit("const")), lit("enum"), field("name", r("name")),
+    lit("{"), osep(), items(wrap("enum_member", seq([field("name", r("property_name")), opt(seq([lit("="), r("assignment")]))]))), osep(), lit("}")
+  ]))),
+  // `namespace a.b {}` is one declaration named `a.b`, and what it holds is
+  // named with it; an ambient module (`declare module "m" {}`) and a global
+  // augmentation are listed but name nothing inside them
+  ("namespace_declaration", alt([
+    wrap("namespace_declaration", seq([
+      r("declaration_prefix"), lits(["namespace", "module"]), field("name", wrap("dotted_name", r("entity_name"))),
+      alt([r("namespace_body"), ahead(eos())])
+    ])),
+    wrap("ambient_module", seq([
+      r("declaration_prefix"),
+      alt([seq([lits(["module", "namespace"]), field("name", tok("string"))]), field("name", keep("global"))]),
+      alt([r("namespace_body"), ahead(eos())])
+    ])),
+  ])),
+  ("namespace_body", wrap("block", seq([lit("{"), osep(), rep(recover(seq([r("top_statement"), osep()]))), lit("}")]))),
+]
+
+fn rules() -> parser.Grammar = grammar(js.START, js.with_overrides(js.base_rules(), overrides() + types.rules()))
+
+// ── tests ──────────────────────────────────────────────────────────────
+fn parse_src(src: String) -> Result[parser.Parsed, String] = {
+  let toks = lexer.scan(src, false) |> result.map_err((e) => "lex " + int.to_string(e.line) + ":" + int.to_string(e.col) + " " + e.message)!
+  parser.parse(rules(), bytes.from_string(src), toks) |> result.map_err((f) => parser.format_failure(f))
+}
+
+fn top_kinds(src: String) -> List[String] = match parse_src(src) {
+  ok(p) => list.map(p.root.kids, (k) => nametable.name_at(p.names, k.kind)),
+  err(e) => ["ERROR " + e],
+}
+
+test "a small module parses with the right declaration kinds" {
+  let src = """
+import type { Reader } from "./io"
+import fs = require("node:fs")
+export type Handler<T extends object = {}> = (event: T, ...rest: unknown[]) => void | Promise<void>
+export interface Widget<T> extends Base, Other<T> {
+  readonly id: string
+  size?: number
+  [key: string]: unknown
+  render<U>(this: Widget<T>, into: U): asserts into is Element
+  get value(): T
+  new (x: number): Widget<T>
+}
+export const enum Color { Red = 1, Green, "Blue" = 1 << 2 }
+declare module "legacy" { export function old(): void }
+declare global { interface Window { app: App } }
+export namespace ns.inner { export const x: readonly string[] = [] }
+@sealed
+export abstract class Base<in out T = string> implements Widget<T> {
+  declare readonly kind: "base"
+  private static count = 0
+  protected abstract render(): void
+  render(into?: unknown): void
+  render(into?: unknown): void { this.count! }
+  constructor(public name: string, private readonly opts: { a?: number } = {}) { super() }
+  accessor state: Map<string, Array<T>> = new Map<string, Array<T>>()
+  static { Base.count = 1 }
+}
+export function isWidget(x: unknown): x is Widget<any> { return (x as Widget<any>).id !== undefined }
+export default function main<T,>(arg: T): T { return <T>arg satisfies T }
+let value = a >> b >>> c >= d, mapped: { -readonly [K in keyof T as `get\${K & string}`]-?: T[K] }
+type Cond<T> = T extends [infer H extends string, ...infer R] ? H : never
+export = main
+"""
+  assert_eq(top_kinds(src), ["import_statement", "import_equals", "export_statement", "export_statement", "export_statement",
+    "ambient_module", "ambient_module", "export_statement", "export_statement", "export_statement", "export_statement",
+    "let_declaration", "type_alias", "export_statement"])
+}
+
+test "JavaScript still parses as JavaScript, with the shift operators joined" {
+  assert_eq(top_kinds("x >>>= 1\ny = a >> b >= c\nz = f<string>(1) < 2\n"), ["expression_statement", "expression_statement", "expression_statement"])
+  assert_eq(top_kinds("const f = async <T,>(x: T): Promise<T> => x\nconst g = (a) => a\n"), ["const_declaration", "const_declaration"])
+  assert_eq(top_kinds("declare\nfoo()\ntype = 1\nnamespace.x = 2\nmodule.exports = 3\n"), ["expression_statement", "expression_statement", "expression_statement", "expression_statement", "expression_statement"])
+}
+
+test "what does not parse says where" {
+  match parse_src("function f(x: ): void {}\n") {
+    ok(_) => assert(false),
+    err(e) => assert(string.starts_with(e, "1:")),
+  }
+  // `b` alone would be a property of implicit type; `b:` is not anything
+  match parse_src("interface I { a: string\n b: }\n") {
+    ok(_) => assert(false),
+    err(e) => assert(string.starts_with(e, "2:")),
+  }
+}

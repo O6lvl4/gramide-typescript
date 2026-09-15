@@ -1,0 +1,60 @@
+// symbols — which of this grammar's nodes declare a name, which own methods,
+// and which reference one: the JavaScript rules, plus interfaces, type
+// aliases, enums and namespaces. What the readers then say about TypeScript
+// is checked against the TypeScript compiler's own syntax tree in
+// ci/reference_ranges.mjs.
+import gramide.package_api
+import gramide.parser
+import gramide.tags
+import gramide_javascript.symbols as js
+import self.lexer
+import self.grammar
+
+fn symbol_rules() -> package_api.SymbolRules = {
+  let base = js.symbol_rules()
+  package_api.SymbolRules {
+    ...base,
+    declarations: base.declarations + [
+      ("interface_declaration", "interface"), ("type_alias", "type"), ("enum_declaration", "enum"),
+      ("namespace_declaration", "namespace"), ("ambient_module", "namespace"),
+      ("method_signature", "method"), ("property_signature", "field")
+    ],
+    // an interface or a type alias owns the methods in its object type
+    scopes: base.scopes + ["interface_declaration", "type_alias"],
+    // what is declared inside a namespace is named with it
+    namespaces: ["namespace_declaration"],
+    callables: base.callables + ["method_signature"],
+    type_mentions: ["type_reference"],
+  }
+}
+
+test "a TypeScript method is named with its class, interface or namespace" {
+  let src = """export namespace ui {
+  export interface Widget { render(): void; size?: number }
+  export abstract class Base implements Widget {
+    abstract render(): void
+    get size(): number { return 0 }
+  }
+  export type Handler = { handle(e: Event): void }
+  export enum Color { Red, Green }
+  export declare function make(): Base
+}
+"""
+  let source = bytes.from_string(src)
+  let toks = lexer.scan(src, false) |> result.map_err((e) => e.message)!
+  let p = parser.parse(grammar.rules(), source, toks) |> result.map_err((f) => parser.format_failure(f))!
+  // the display outline nests instead of qualifying; `symbols` writes `ui.Widget`
+  assert_eq(tags.outline(p.root, toks, source, p.names, ".", symbol_rules()), [
+    "L1-10 namespace ui",
+    "  L2-2 interface Widget",
+    "    L2-2 method Widget.render",
+    "    L2-2 field size",
+    "  L3-6 class Base",
+    "    L4-4 method Base.render",
+    "    L5-5 method Base.size",
+    "  L7-7 type Handler",
+    "    L7-7 method Handler.handle",
+    "  L8-8 enum Color",
+    "  L9-9 function make",
+  ])
+}

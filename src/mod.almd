@@ -1,0 +1,28 @@
+// gramide_typescript — TypeScript for gramide: what the package hands the host.
+//
+// TypeScript is JavaScript with types, and this package is the JavaScript
+// package with rules put under its extension points: src/lexer.almd is the
+// JavaScript scanner told to read `>` one at a time, src/types.almd is the
+// type grammar, src/grammar.almd is every JavaScript rule replaced and every
+// TypeScript declaration added, src/symbols.almd says which of the new nodes
+// declare a name, and src/table.almd is the grammar compiled, which is what
+// a binary reads. `definition()` is the whole contract.
+import gramide.package_api
+import gramide.tree
+import gramide.lex
+import self.lexer
+import self.symbols
+import self.table
+
+let VERSION = "0.1.0"
+
+fn prepare_lexer() -> package_api.Tokenizer = {
+  let prepared = lexer.tables()
+  (source, recovering) => lexer.scan_prepared(source, prepared, recovering)
+}
+
+fn definition() -> package_api.Definition = package_api.Definition {
+  id: "typescript", package_name: "gramide-typescript", version: VERSION, extensions: [".ts", ".mts", ".cts"],
+  capabilities: ["check", "tokens", "parse", "outline", "symbols", "symbols-recovered", "tags", "map"],
+  lexer: () => prepare_lexer(), grammar: () => table.compiled(), sep: ".", symbols: symbols.symbol_rules()
+}

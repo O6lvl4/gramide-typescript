@@ -1,0 +1,22 @@
+// lexer — the JavaScript scanner, with one difference the type syntax
+// forces: `>` is always one token. `Array<Array<T>>` closes two generic
+// brackets with what JavaScript reads as one shift operator, so the shift
+// and comparison operators that begin with `>` are read here as runs of
+// single tokens and joined again by the grammar, which does not check that
+// they are adjacent. That is the same permissiveness the Rust package has
+// for the same reason.
+import gramide.tree
+import gramide.lex
+import gramide_javascript.lexer as js
+
+fn tables() -> js.ScanTables = js.prepare(true)
+fn scan_prepared(source: String, tables: js.ScanTables, recovering: Bool) -> Result[List[tree.Token], lex.LexError] = js.scan_prepared(source, tables, recovering)
+fn scan(source: String, recovering: Bool) -> Result[List[tree.Token], lex.LexError] = scan_prepared(source, tables(), recovering)
+
+test "a closing generic bracket is not half of a shift operator" {
+  let src = "let x: Map<string, Array<T>> = a >> b; y >>>= 1; z >= 2"
+  let toks = scan(src, false)!
+  let texts = lex.texts(bytes.from_string(src), toks)
+  assert_eq(list.take(list.drop(texts, 9), 4), ["T", ">", ">", "="])
+  assert(list.contains(texts, "z") and not list.contains(texts, ">=") and not list.contains(texts, ">>>="))
+}

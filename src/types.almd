@@ -1,0 +1,91 @@
+// types — the type grammar: everything that can stand after a `:`.
+//
+// In precedence order: a conditional type, a union, an intersection, a
+// prefix operator (`keyof`, `unique`, `readonly`, `infer`), a postfix
+// (`T[]`, `T[K]`), and the primaries — function and constructor types,
+// parentheses, tuples, object types with their members and mapped types,
+// `typeof`, `import()`, literals and template literal types, and a
+// reference to a named type with its arguments.
+//
+// A function type looks like a parenthesised type until its `=>`, so it is
+// found the way an arrow function is: a balanced lookahead over the
+// parameter list, then one parse.
+import gramide.parser
+import gramide.parser.{ tok, lit, keep, r, seq, alt, rep, opt, wrap, field, nest, ahead, nott, lits, keeps }
+import gramide_javascript.common
+import gramide_javascript.common.{ ident, sep, osep, items, items1 }
+import gramide_javascript.declarations as decls
+
+fn rules() -> List[(String, parser.Rule)] = [
+  ("type", r("conditional_type")),
+  ("conditional_type", nest("conditional_type", seq([
+    r("union_type"), opt(seq([lit("extends"), r("union_type"), lit("?"), r("type"), lit(":"), r("type")]))
+  ]))),
+  ("union_type", nest("union_type", seq([opt(lit("|")), r("intersection_type"), rep(seq([lit("|"), r("intersection_type")]))]))),
+  ("intersection_type", nest("intersection_type", seq([opt(lit("&")), r("type_operator"), rep(seq([lit("&"), r("type_operator")]))]))),
+  ("type_operator", alt([
+    wrap("type_operator", seq([keeps(["keyof", "unique", "readonly"]), r("type_operator")])),
+    // `infer U extends X ? A : B` — when a `?` follows, the `extends` was
+    // the conditional's, which is how the compiler reads it
+    wrap("infer_type", seq([lit("infer"), field("name", r("name")), opt(seq([lit("extends"), r("type_operator"), nott(lit("?"))]))])),
+    r("postfix_type"),
+  ])),
+  ("postfix_type", nest("postfix_type", seq([r("primary_type"), rep(alt([
+    wrap("array_type", seq([lit("["), lit("]")])),
+    wrap("indexed_access_type", seq([lit("["), r("type"), lit("]")])),
+  ]))]))),
+  ("primary_type", alt([
+    seq([r("function_type_ahead"), r("function_type")]),
+    wrap("constructor_type", seq([opt(lit("abstract")), lit("new"), r("type_parameters"), r("parameters"), lit("=>"), r("type")])),
+    wrap("parenthesized_type", seq([lit("("), r("type"), lit(")")])),
+    r("tuple_type"), r("object_type"),
+    wrap("typeof_type", seq([lit("typeof"), alt([r("import_type"), seq([r("entity_name"), r("type_arguments")])])])),
+    r("import_type"),
+    wrap("literal_type", alt([
+      tok("number"), tok("string"), r("template_literal_type"), seq([lit("-"), tok("number")]),
+      keeps(["true", "false", "null", "void", "this"]),
+    ])),
+    wrap("type_reference", seq([r("entity_name"), r("type_arguments")])),
+  ])),
+  ("function_type_ahead", ahead(seq([r("type_parameters"), lit("("), rep(r("tt")), lit(")"), lit("=>")]))),
+  ("function_type", wrap("function_type", seq([r("type_parameters"), r("parameters"), lit("=>"), r("return_type")]))),
+  // what follows the `:` of a signature: a type, or a predicate on a parameter
+  ("return_type", alt([
+    wrap("type_predicate", seq([opt(lit("asserts")), alt([r("name"), lit("this")]), lit("is"), r("type")])),
+    wrap("type_predicate", seq([lit("asserts"), alt([r("name"), lit("this")])])),
+    r("type"),
+  ])),
+  ("tuple_type", wrap("tuple_type", seq([lit("["), items(r("tuple_member")), lit("]")]))),
+  ("tuple_member", alt([
+    seq([opt(lit("...")), r("name"), opt(lit("?")), lit(":"), r("type")]),
+    seq([lit("..."), r("type")]),
+    seq([r("type"), opt(lit("?"))]),
+  ])),
+
+  // ── object types ──────────────────────────────────────────────────────
+  ("object_type", wrap("object_type", seq([
+    lit("{"), osep(), rep(seq([r("type_member"), alt([lit(","), sep(), ahead(lit("}"))])])), lit("}")
+  ]))),
+  ("type_member", alt([
+    r("mapped_type_member"),
+    wrap("index_signature", seq([rep(seq([lit("readonly"), ahead(lit("["))])), lit("["), r("name"), lit(":"), r("type"), lit("]"), r("type_annotation")])),
+    wrap("call_signature", seq([r("type_parameters"), r("parameters"), r("return_annotation")])),
+    wrap("construct_signature", seq([lit("new"), r("type_parameters"), r("parameters"), r("return_annotation")])),
+    wrap("method_signature", seq([r("type_member_modifiers"), field("name", r("property_name")), opt(lit("?")), r("type_parameters"), r("parameters"), r("return_annotation")])),
+    wrap("property_signature", seq([r("type_member_modifiers"), field("name", r("property_name")), opt(lit("?")), r("type_annotation")])),
+  ])),
+  ("type_member_modifiers", rep(alt([decls.modifier("readonly"), decls.modifier("get"), decls.modifier("set")]))),
+  ("mapped_type_member", wrap("mapped_type", seq([
+    opt(seq([opt(lits(["+", "-"])), lit("readonly")])),
+    lit("["), r("name"), lit("in"), r("type"), opt(seq([lit("as"), r("type")])), lit("]"),
+    opt(seq([opt(lits(["+", "-"])), lit("?")])), r("type_annotation")
+  ]))),
+  ("template_literal_type", wrap("template_type", seq([
+    tok("tstring_start"), opt(seq([r("type"), rep(seq([tok("tstring_middle"), r("type")]))])), tok("tstring_end")
+  ]))),
+  ("import_type", wrap("import_type", seq([
+    lit("import"), lit("("), tok("string"), opt(seq([lit(","), r("object")])), lit(")"),
+    opt(seq([lit("."), r("entity_name")])), r("type_arguments")
+  ]))),
+  ("entity_name", seq([alt([r("name"), lit("this")]), rep(seq([lit("."), ident()]))])),
+]

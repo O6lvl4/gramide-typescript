@@ -1,0 +1,21 @@
+{
+  "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
+  "node": "v22.23.1",
+  "typescript": "5.9.3",
+  "binary_sha256": "32d05ec9c411c4a73555879abace768f559529f9ac72059e5b2e12560acd50e8",
+  "root": "/private/tmp/claude-501/-Users-o6lvl4-workspace-github-com-O6lvl4/feff91f1-8463-4723-81b5-5e690f144e50/scratchpad/ts5/node_modules/typescript/lib",
+  "ext": [
+    ".ts"
+  ],
+  "excluded": [],
+  "files": 102,
+  "bytes": 3730785,
+  "check_seconds": 0.018,
+  "megabytes_per_second": 208.2,
+  "reference_rejected": [],
+  "gramide_rejected": [],
+  "range_mismatch": [],
+  "passed": 102,
+  "symbols": 26413,
+  "input_sha256": "056897e2a194b5c1a9c699b8ce209911054134186a93f9883b4e4564ddb784c9"
+}
