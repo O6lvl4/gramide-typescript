@@ -3,7 +3,7 @@
  "edits": 1000,
  "seed": 7,
  "verify_every": 50,
- "gramide_sha256": "2d270e5c60980f93220b4cab1619580eeec8ff10e74f5d1123f5de32dd329d59",
+ "gramide_sha256": "f1bf1904596611ee1178ced2f3051e3541dadb63ab18792acf1060a8a252e5aa",
  "tree_sitter_harness_sha256": "460ecbe2c733656ac6daea0215c62d8a230e7a28e2c2947cb38c6b7d34ae2020",
  "files": [
   {
@@ -12,9 +12,9 @@
    "gramide": {
     "tool": "gramide",
     "edits": 1000,
-    "median_us": 67.2,
-    "p90_us": 89.7,
-    "max_us": 438.0,
+    "median_us": 78.3,
+    "p90_us": 100.9,
+    "max_us": 513.7,
     "fallbacks": 0,
     "mismatches": 0,
     "initial_mismatch": false,
@@ -27,14 +27,19 @@
      "error_near": 0
     },
     "whole_parse_samples": 20,
-    "whole_parse_median_us": 9054.6
+    "whole_parse_median_us": 9048.3,
+    "items": 4667,
+    "items_renamed_median": 0,
+    "items_renamed_p90": 0,
+    "items_renamed_max": 0,
+    "edits_renaming_none": 1000
    },
    "tree_sitter": {
     "tool": "tree-sitter",
     "edits": 1000,
     "median_us": 120.0,
-    "p90_us": 136.0,
-    "max_us": 163.0,
+    "p90_us": 138.0,
+    "max_us": 180.0,
     "errors_at_end": 0,
     "first_error_edit": -1
    }
@@ -45,9 +50,9 @@
    "gramide": {
     "tool": "gramide",
     "edits": 1000,
-    "median_us": 120.5,
-    "p90_us": 164.8,
-    "max_us": 771.1,
+    "median_us": 151.7,
+    "p90_us": 201.1,
+    "max_us": 880.7,
     "fallbacks": 0,
     "mismatches": 0,
     "initial_mismatch": false,
@@ -60,14 +65,19 @@
      "error_near": 0
     },
     "whole_parse_samples": 20,
-    "whole_parse_median_us": 54127.5
+    "whole_parse_median_us": 55362.7,
+    "items": 25587,
+    "items_renamed_median": 0,
+    "items_renamed_p90": 0,
+    "items_renamed_max": 0,
+    "edits_renaming_none": 1000
    },
    "tree_sitter": {
     "tool": "tree-sitter",
     "edits": 1000,
-    "median_us": 560.0,
-    "p90_us": 589.0,
-    "max_us": 660.0,
+    "median_us": 562.0,
+    "p90_us": 592.0,
+    "max_us": 697.0,
     "errors_at_end": 0,
     "first_error_edit": -1
    }

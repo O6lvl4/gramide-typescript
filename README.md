@@ -154,9 +154,9 @@ against a whole parse ([evidence](docs/evidence/incremental-typescript-src.json)
 
 | median over 1,000 edits | gramide | tree-sitter | a whole parse |
 |---|---:|---:|---:|
-| `compiler/parser.ts` (540 KB) | 67 µs | 120 µs | 9.1 ms |
-| `compiler/checker.ts` (3.1 MB, one function of 2.9 MB) | 121 µs | 560 µs | 54 ms |
-| Excalidraw `components/App.tsx` (465 KB) | 67 µs | 220 µs | 9.3 ms |
+| `compiler/parser.ts` (540 KB) | 78 µs | 120 µs | 9.0 ms |
+| `compiler/checker.ts` (3.1 MB, one function of 2.9 MB) | 152 µs | 562 µs | 55 ms |
+| Excalidraw `components/App.tsx` (465 KB) | 80 µs | 218 µs | 9.2 ms |
 
 `checker.ts` is where a whole parse per keystroke is out of the question
 and where tree-sitter's reparse is slowest; the deepest item holding the
@@ -170,7 +170,7 @@ whole parse of the same text ([evidence](docs/evidence/incremental-corpus-typesc
 
 | corpus | files | edits | differences | read as a whole file |
 |---|---:|---:|---:|---:|
-| TypeScript 5.9.3 `src/` | 643 | 6,430 | 0 | 130, all in files whose top level holds no item (there are 24) |
+| TypeScript 5.9.3 `src/` | 643 | 6,430 | 0 | 0 |
 | MUI docs `.tsx` | 489 | 4,890 | 0 | 0 |
 | Excalidraw `.ts` | 178 | 1,780 | 0 | 0 |
 
