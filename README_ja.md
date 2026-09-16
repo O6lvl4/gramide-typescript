@@ -96,6 +96,9 @@ tree-sitter-typescript(`75b3874`)を tree-sitter ランタイム(`1b8407d`)の�
 | 空ファイル(プロセスの床) | 1.75 ms | 1.37 ms |
 
 合計ではほぼプロセスの床の勝負で 1 割速く、パースが費用になるファイルでは 2 倍速い。
+床は C のハーネスより 0.28 ms 高く、うち 0.15 ms は Rust の標準ランタイムの起動で、
+プロセスごとに一度払うだけなのでそのままにしている
+([内訳](https://github.com/O6lvl4/gramide-javascript/blob/main/docs/evidence/process-floor.json))。
 tree-sitter はこのうち 4 ファイル(`compiler/types.ts`、`compiler/transformers/utilities.ts`、
 `services/exportInfoMap.ts`、`lib/es2015.symbol.wellknown.d.ts`)に構文エラーを報告するが、
 コンパイラもこのパッケージも受理する。gramide の一覧はフィールド・束縛・namespace・

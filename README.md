@@ -111,7 +111,10 @@ tools alternating, the minimum of three runs kept
 | an empty file (the process floor) | 1.75 ms | 1.37 ms |
 
 Ahead by a tenth on the sum, which is mostly process floors, and by 2× on
-the files where parsing is the cost. tree-sitter reports a syntax error on
+the files where parsing is the cost. The floor is 0.28 ms above the C
+harness, 0.15 ms of it Rust's standard runtime starting, and is paid once
+per process, so it is left as it is
+([where it goes](https://github.com/O6lvl4/gramide-javascript/blob/main/docs/evidence/process-floor.json)). tree-sitter reports a syntax error on
 four of these files (`compiler/types.ts`, `compiler/transformers/utilities.ts`,
 `services/exportInfoMap.ts`, `lib/es2015.symbol.wellknown.d.ts`) that the
 compiler and this package accept. gramide's listing carries more (fields,
