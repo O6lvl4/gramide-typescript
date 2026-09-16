@@ -102,6 +102,23 @@ tree-sitter はこのうち 4 ファイル(`compiler/types.ts`、`compiler/trans
 全メソッドの所有者を含む(48,691 行に対して 19,300 行)ので、一覧の行は多い仕事と
 少ない仕事の比較になっている。
 
+`.tsx` でも同じ。tree-sitter の tsx 文法と比較
+([証拠](docs/evidence/tree-sitter-mui-docs-tsx.json)、
+[証拠](docs/evidence/tree-sitter-excalidraw-tsx.json)):
+
+| コーパス | gramide | tree-sitter |
+|---|---:|---:|
+| MUI docs `.tsx`、538 ファイル、1.0 MB: 合否、合計 | 1.054 秒 | 0.910 秒 |
+| MUI docs `.tsx`: 一覧、合計 | 1.101 秒 | 0.930 秒 |
+| Excalidraw `.tsx`、261 ファイル、2.6 MB: 合否、合計 | 0.552 秒 | 0.544 秒 |
+| Excalidraw `.tsx`: 一覧、合計 | 0.610 秒 | 0.584 秒 |
+| `components/App.tsx`(465 KB)、合否 | 9.9 ms | 20.1 ms |
+| `components/App.tsx`、一覧 | 16.6 ms | 25.8 ms |
+
+MUI のデモは平均 2 KB で、その合計はプロセスの床。App.tsx がパースの差を示す。
+tree-sitter の tsx 文法は Excalidraw のテスト 2 ファイルに構文エラーを報告するが、
+コンパイラもこのパッケージも受理する。
+
 ## 作り
 
 - **`src/lexer.almd`** — JavaScript のスキャナに `>` を 1 トークンずつ読ませたもの。

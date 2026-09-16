@@ -118,6 +118,23 @@ compiler and this package accept. gramide's listing carries more (fields,
 bindings, namespaces, owners on every method: 48,691 rows to 19,300), so the
 listing rows compare more work against less.
 
+The same on `.tsx`, against tree-sitter's tsx grammar
+([evidence](docs/evidence/tree-sitter-mui-docs-tsx.json),
+[evidence](docs/evidence/tree-sitter-excalidraw-tsx.json)):
+
+| corpus | gramide | tree-sitter |
+|---|---:|---:|
+| MUI docs `.tsx`, 538 files, 1.0 MB: verdict, sum | 1.054 s | 0.910 s |
+| MUI docs `.tsx`: listing, sum | 1.101 s | 0.930 s |
+| Excalidraw `.tsx`, 261 files, 2.6 MB: verdict, sum | 0.552 s | 0.544 s |
+| Excalidraw `.tsx`: listing, sum | 0.610 s | 0.584 s |
+| `components/App.tsx` (465 KB), verdict | 9.9 ms | 20.1 ms |
+| `components/App.tsx`, listing | 16.6 ms | 25.8 ms |
+
+The MUI demos average 2 KB, so that sum is the process floor; App.tsx shows
+the parse. tree-sitter's tsx grammar reports a syntax error on two Excalidraw
+test files the compiler and this package accept.
+
 ## How it is written
 
 - **`src/lexer.almd`** — the JavaScript scanner told to read `>` one token
