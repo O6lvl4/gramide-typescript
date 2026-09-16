@@ -136,9 +136,9 @@ tree-sitter の tsx 文法は Excalidraw のテスト 2 ファイルに構文エ
 
 | 1,000 編集の中央値 | gramide | tree-sitter | 参考: 全文パース |
 |---|---:|---:|---:|
-| `compiler/parser.ts`(540 KB) | 78 µs | 122 µs | 9.1 ms |
-| `compiler/checker.ts`(3.1 MB、うち 2.9 MB が 1 つの関数) | 130 µs | 574 µs | 56 ms |
-| Excalidraw `components/App.tsx`(465 KB) | 83 µs | 225 µs | 9.6 ms |
+| `compiler/parser.ts`(540 KB) | 67 µs | 120 µs | 9.1 ms |
+| `compiler/checker.ts`(3.1 MB、うち 2.9 MB が 1 つの関数) | 121 µs | 560 µs | 54 ms |
+| Excalidraw `components/App.tsx`(465 KB) | 67 µs | 220 µs | 9.3 ms |
 
 `checker.ts` はキー入力ごとの全文パースが論外で、tree-sitter の再パースも最も遅いファイル。
 編集を含む最も深い項目は 1 つの文で、gramide が読むのはそれだけ。
