@@ -1,4 +1,4 @@
 # almide.lock — auto-generated, do not edit
 
-gramide = { git = "https://github.com/O6lvl4/gramide", ref = "v0.2.1", commit = "b22b9860dae741c7df914a25da84f8ad3e5e9020" }
-gramide_javascript = { git = "https://github.com/O6lvl4/gramide-javascript", ref = "v0.3.2", commit = "36b3c6564f20cc10f753bc15172b5a5ec1086fb9" }
+gramide = { git = "https://github.com/O6lvl4/gramide", ref = "v0.2.2", commit = "3158c127409bf54236d3cb59016eab5614e57d7a" }
+gramide_javascript = { git = "https://github.com/O6lvl4/gramide-javascript", ref = "v0.3.3", commit = "8b38ec5ec22f0697ece349246c6d07f68032dbed" }

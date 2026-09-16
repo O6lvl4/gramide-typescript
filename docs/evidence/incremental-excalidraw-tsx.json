@@ -3,7 +3,7 @@
  "edits": 1000,
  "seed": 7,
  "verify_every": 50,
- "gramide_sha256": "58bcb5ee5cd2aa10ab2ef47db98b2e8494cd1f208e7a6567518896a350a327c5",
+ "gramide_sha256": "9f05e6a91ecc06e53011d7dc21e72f430684a406e529d6bbbe8fe17d493e429b",
  "tree_sitter_harness_sha256": "f6ac477f39333a98cedf1ea545d11502be203e002d6897e8b9d77b73ff4f10a1",
  "files": [
   {
@@ -12,9 +12,9 @@
    "gramide": {
     "tool": "gramide",
     "edits": 1000,
-    "median_us": 71.8,
-    "p90_us": 196.0,
-    "max_us": 1581.9,
+    "median_us": 83.1,
+    "p90_us": 206.6,
+    "max_us": 1637.8,
     "fallbacks": 0,
     "mismatches": 0,
     "initial_mismatch": false,
@@ -27,14 +27,14 @@
      "error_near": 0
     },
     "whole_parse_samples": 20,
-    "whole_parse_median_us": 9432.2
+    "whole_parse_median_us": 9564.2
    },
    "tree_sitter": {
     "tool": "tree-sitter",
     "edits": 1000,
-    "median_us": 220.0,
-    "p90_us": 240.0,
-    "max_us": 302.0,
+    "median_us": 225.0,
+    "p90_us": 255.0,
+    "max_us": 418.0,
     "errors_at_end": 0
    }
   }
