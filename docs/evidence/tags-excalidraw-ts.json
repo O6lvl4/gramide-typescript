@@ -5,18 +5,16 @@
   "binary_sha256": "a39143616c766d4ce4978c9b5c6c4d75cf66effa54169828635db721be5c6cb2",
   "root": "/Users/o6lvl4/workspace/github.com/O6lvl4/almide-references/excalidraw/packages/excalidraw",
   "ext": [
-    ".tsx"
+    ".ts"
   ],
   "excluded": [],
-  "files": 261,
-  "bytes": 2595979,
-  "check_seconds": 0.021,
-  "megabytes_per_second": 121.1,
+  "files": 187,
+  "bytes": 3145749,
   "reference_rejected": [],
   "gramide_rejected": [],
-  "range_mismatch": [],
-  "passed": 261,
-  "symbols": 2848,
+  "reference_mismatch": [],
+  "passed": 187,
+  "references": 12175,
   "reference_commit": "a9186480121afc16ccdec789fc533e6a9ee68c10",
-  "input_sha256": "ef21303ae2dd6f47ff6476f88a2ea56ac754bb390a1c1e6201bdc22cc9f6c0dd"
+  "input_sha256": "1c95176c0dc8051a7a07e64fb1cddde3dbc36b01c4b49056352fff70c06fa0ba"
 }

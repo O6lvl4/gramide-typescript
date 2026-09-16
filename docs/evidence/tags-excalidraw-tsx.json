@@ -10,13 +10,11 @@
   "excluded": [],
   "files": 261,
   "bytes": 2595979,
-  "check_seconds": 0.021,
-  "megabytes_per_second": 121.1,
   "reference_rejected": [],
   "gramide_rejected": [],
-  "range_mismatch": [],
+  "reference_mismatch": [],
   "passed": 261,
-  "symbols": 2848,
+  "references": 29074,
   "reference_commit": "a9186480121afc16ccdec789fc533e6a9ee68c10",
   "input_sha256": "ef21303ae2dd6f47ff6476f88a2ea56ac754bb390a1c1e6201bdc22cc9f6c0dd"
 }

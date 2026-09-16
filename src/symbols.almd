@@ -24,7 +24,7 @@ fn symbol_rules() -> package_api.SymbolRules = {
     // what is declared inside a namespace is named with it
     namespaces: ["namespace_declaration"],
     callables: base.callables + ["method_signature"],
-    type_mentions: ["type_reference"],
+    type_mentions: ["type_reference", "extends_clause"],
   }
 }
 

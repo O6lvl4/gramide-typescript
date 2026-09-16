@@ -10,6 +10,7 @@ compiler="${ALMIDE_BIN:-almide}"
 ./gramide_typescript gen-table-tsx | diff -u src/table_tsx.almd - \
   || { echo "src/table_tsx.almd is not what the tsx grammar compiles to: ./gramide_typescript gen-table-tsx > src/table_tsx.almd"; exit 1; }
 python3 ci/smoke.py
+python3 ci/tags_cases.py
 
 # The oracle is the TypeScript compiler's parser (typescript 5.x from npm):
 # ci/package.json pins it, and `npm ci` in ci/ fetches it.

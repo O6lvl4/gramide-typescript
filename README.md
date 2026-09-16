@@ -60,11 +60,31 @@ byte range.
 | TypeScript 5.9.3 `lib/*.d.ts` | 102 | 3.7 MB | all parse; all 26,413 declarations match the reference |
 | MUI `docs/data/{material,joy}/components/**/*.tsx` at `053c4319` | 538 | 1.0 MB | all parse; all 1,378 declarations match the reference |
 | Excalidraw `packages/excalidraw/**/*.tsx` at `a9186480` | 261 | 2.6 MB | all parse; all 2,848 declarations match the reference |
+| Excalidraw `packages/excalidraw/**/*.ts` at `a9186480` | 187 | 3.1 MB | all parse; all 3,264 declarations match the reference |
+
+The same files through `tags`, with every reference compared against a second
+oracle over the compiler's parser ([rules](ci/reference_tags.mjs)):
+
+| corpus | references | result |
+|---|---:|---|
+| TypeScript 5.9.3 `src/` | 175,408 | all match ([evidence](docs/evidence/tags-typescript-src.json)) |
+| TypeScript 5.9.3 `lib/*.d.ts` | 27,369 | all match ([evidence](docs/evidence/tags-typescript-lib-dts.json)) |
+| MUI docs `.tsx` | 2,932 | all match ([evidence](docs/evidence/tags-mui-docs-tsx.json)) |
+| Excalidraw `.tsx` | 29,074 | all match ([evidence](docs/evidence/tags-excalidraw-tsx.json)) |
+| Excalidraw `.ts` | 12,175 | all match ([evidence](docs/evidence/tags-excalidraw-ts.json)) |
+
+A reference is a call of a name (`f(…)`, `a.b(…)`, `new Map<K, V>(…)`, an
+applied decorator; a non-null `!` is not there) or a type mention: an
+annotation, a type argument, `as` / `satisfies` / `<T>x`, `keyof T`, an
+`implements` or `extends` clause, a qualified name by its first segment.
+What is deliberately not one (keyword types, `as const`, `typeof x`, JSX tag
+names, imports) is listed in [ci/tags_cases.py](ci/tags_cases.py).
 
 ([evidence](docs/evidence/corpus-typescript-src.json),
 [evidence](docs/evidence/corpus-typescript-lib-dts.json),
 [evidence](docs/evidence/corpus-mui-docs-tsx.json),
-[evidence](docs/evidence/corpus-excalidraw-tsx.json).) A declaration
+[evidence](docs/evidence/corpus-excalidraw-tsx.json),
+[evidence](docs/evidence/corpus-excalidraw-ts.json).) A declaration
 here is everything the JavaScript package lists, plus interfaces, type
 aliases, enums and namespaces, method and property signatures, and the
 names inside a namespace qualified with it (`ts.Parser.parse`). The batched

@@ -44,7 +44,7 @@ fn overrides() -> List[(String, parser.Rule)] = [
   ("param_modifiers", keyword_before(["public", "private", "protected", "readonly", "override"], alt([r("name"), lits(["{", "[", "...", "this"])]))),
   ("class_modifiers", keyword_before(["abstract"], lit("class"))),
   ("class_heritage", seq([
-    opt(seq([lit("extends"), r("postfix_expr"), r("type_arguments")])),
+    opt(wrap("extends_clause", seq([lit("extends"), r("postfix_expr"), r("type_arguments")]))),
     opt(seq([lit("implements"), items1(r("type"))]))
   ])),
   ("member_modifiers", rep(alt(list.map(MODIFIERS, (w) => decls.modifier(w)) + [lit("*")]))),
@@ -88,8 +88,11 @@ fn overrides() -> List[(String, parser.Rule)] = [
   ("binary", prec("binary", r("relational"), [
     keep("??"), keep("||"), keep("&&"), keep("|"), keep("^"), keep("&"), keeps(["==", "!=", "===", "!=="])
   ])),
-  ("relational", leftf("binary", r("shift"), alt([keeps(["<", "<=", "instanceof", "in"]), seq([keep(">"), opt(keep("="))])]))),
-  ("shift", leftf("binary", r("additive"), alt([keep("<<"), seq([keep(">"), keep(">"), opt(keep(">"))])]))),
+  // A `>` after an operand ends the line for the scanner, because `Promise<void>`
+  // ends one; a comparison or shift written `a >⏎ b` then continues past the
+  // separator, which no statement could have started with anyway.
+  ("relational", leftf("binary", r("shift"), alt([keeps(["<", "<=", "instanceof", "in"]), seq([keep(">"), opt(keep("=")), opt(tok("newline"))])]))),
+  ("shift", leftf("binary", r("additive"), alt([keep("<<"), seq([keep(">"), keep(">"), opt(keep(">")), opt(tok("newline"))])]))),
   ("assignment", alt([
     seq([r("arrow_ahead"), r("arrow_function")]),
     wrap("yield", seq([lit("yield"), opt(seq([opt(lit("*")), r("assignment")]))])),
@@ -190,6 +193,7 @@ export = main
 
 test "JavaScript still parses as JavaScript, with the shift operators joined" {
   assert_eq(top_kinds("x >>>= 1\ny = a >> b >= c\nz = f<string>(1) < 2\n"), ["expression_statement", "expression_statement", "expression_statement"])
+  assert_eq(top_kinds("if (a.b(c) >\n  a.b(d)) {}\nlet p: Promise<void>\nfoo()\nx = y >>\n  2\n"), ["if_statement", "let_declaration", "expression_statement", "expression_statement"])
   assert_eq(top_kinds("const f = async <T,>(x: T): Promise<T> => x\nconst g = (a) => a\n"), ["const_declaration", "const_declaration"])
   assert_eq(top_kinds("declare\nfoo()\ntype = 1\nnamespace.x = 2\nmodule.exports = 3\n"), ["expression_statement", "expression_statement", "expression_statement", "expression_statement", "expression_statement"])
 }

@@ -48,11 +48,30 @@ TypeScript コンパイラの 5.9.3 タグの `src/` 配下の全 `.ts` と、�
 | TypeScript 5.9.3 `lib/*.d.ts` | 102 | 3.7 MB | 全件パース。26,413 宣言すべてが参照と一致 |
 | MUI `docs/data/{material,joy}/components/**/*.tsx`(`053c4319`) | 538 | 1.0 MB | 全件パース。1,378 宣言すべてが参照と一致 |
 | Excalidraw `packages/excalidraw/**/*.tsx`(`a9186480`) | 261 | 2.6 MB | 全件パース。2,848 宣言すべてが参照と一致 |
+| Excalidraw `packages/excalidraw/**/*.ts`(`a9186480`) | 187 | 3.1 MB | 全件パース。3,264 宣言すべてが参照と一致 |
+
+同じファイルを `tags` にも通し、参照をすべて、コンパイラのパーサの上の第二の oracle
+([規則](ci/reference_tags.mjs))と比較した:
+
+| コーパス | 参照 | 結果 |
+|---|---:|---|
+| TypeScript 5.9.3 `src/` | 175,408 | すべて一致([証拠](docs/evidence/tags-typescript-src.json)) |
+| TypeScript 5.9.3 `lib/*.d.ts` | 27,369 | すべて一致([証拠](docs/evidence/tags-typescript-lib-dts.json)) |
+| MUI docs `.tsx` | 2,932 | すべて一致([証拠](docs/evidence/tags-mui-docs-tsx.json)) |
+| Excalidraw `.tsx` | 29,074 | すべて一致([証拠](docs/evidence/tags-excalidraw-tsx.json)) |
+| Excalidraw `.ts` | 12,175 | すべて一致([証拠](docs/evidence/tags-excalidraw-ts.json)) |
+
+参照とは、名前の呼び出し(`f(…)`、`a.b(…)`、`new Map<K, V>(…)`、適用されたデコレータ。
+non-null の `!` は無いものとして読む)と、型への言及(注釈、型引数、`as` / `satisfies` / `<T>x`、
+`keyof T`、`implements` と `extends` 節、修飾名はその先頭の区切り)。意図して参照にしないもの
+(キーワード型、`as const`、`typeof x`、JSX のタグ名、import)は
+[ci/tags_cases.py](ci/tags_cases.py) に列挙してある。
 
 ([証拠](docs/evidence/corpus-typescript-src.json)、
 [証拠](docs/evidence/corpus-typescript-lib-dts.json)、
 [証拠](docs/evidence/corpus-mui-docs-tsx.json)、
-[証拠](docs/evidence/corpus-excalidraw-tsx.json))。ここでの宣言とは、JavaScript
+[証拠](docs/evidence/corpus-excalidraw-tsx.json)、
+[証拠](docs/evidence/corpus-excalidraw-ts.json))。ここでの宣言とは、JavaScript
 パッケージが列挙するものすべてに加え、interface・型エイリアス・enum・namespace、メソッドと
 プロパティのシグネチャ、そして namespace の中の名前を namespace で修飾したもの
 (`ts.Parser.parse`)。コンパイラ `src/` へのバッチ `check` は 8 コアで約 340 MB/s。

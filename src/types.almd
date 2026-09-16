@@ -43,7 +43,8 @@ fn rules() -> List[(String, parser.Rule)] = [
     r("import_type"),
     wrap("literal_type", alt([
       tok("number"), tok("string"), r("template_literal_type"), seq([lit("-"), tok("number")]),
-      keeps(["true", "false", "null", "void", "this"]),
+      // the keyword types are not references to anything a file declares
+      keeps(["true", "false", "null", "void", "this", "undefined", "any", "unknown", "never", "string", "number", "boolean", "bigint", "symbol", "object", "intrinsic"]),
     ])),
     wrap("type_reference", seq([r("entity_name"), r("type_arguments")])),
   ])),

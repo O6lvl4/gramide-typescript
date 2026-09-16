@@ -22,6 +22,13 @@ runs the same comparison over every `.ts`, `.mts` and `.cts` file under a
 directory — acceptance both ways, then every declaration's kind, name, owner,
 line and byte range — and writes the evidence the README cites.
 
+`python3 ci/reference_tags.py /path/to/src docs/evidence/tags-typescript-src.json`
+does the same for `tags`: every `ref call` and `ref type` line against
+`ci/reference_tags.mjs`, a second oracle over the compiler's parser that
+states the reference rules in its header. `ci/tags_cases.py` is those rules
+one line each, with the references deliberately not reported listed beside
+the ones that are.
+
 `./gramide_typescript lex-check FILE...` runs the scanner alone, strictly,
 and names the files that do not lex.
 
