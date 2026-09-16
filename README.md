@@ -92,6 +92,32 @@ names inside a namespace qualified with it (`ts.Parser.parse`). The batched
 
 The fixtures CI runs are in [ci/README.md](ci/README.md).
 
+## Against tree-sitter
+
+tree-sitter-typescript at `75b3874` on the tree-sitter runtime at `1b8407d`,
+through [bench/tree_sitter_ranges.c](bench/tree_sitter_ranges.c): a fresh
+process per file, the parse verdict and then the declaration listing, both
+tools alternating, the minimum of three runs kept
+([evidence](docs/evidence/tree-sitter-typescript-src.json), method in
+[bench/tree_sitter.py](bench/tree_sitter.py)).
+
+| TypeScript 5.9.3 `src/`, 701 files, 20.6 MB | gramide | tree-sitter |
+|---|---:|---:|
+| parse verdict, sum over the files | 1.676 s | 1.837 s |
+| declaration listing, sum over the files | 1.986 s | 2.054 s |
+| the 16 files of 200 KB or more (7.9 MB), verdict | 0.151 s | 0.305 s |
+| those 16 files, listing | 0.277 s | 0.398 s |
+| `compiler/checker.ts` (3.1 MB), verdict | 47 ms | 101 ms |
+| an empty file (the process floor) | 1.75 ms | 1.37 ms |
+
+Ahead by a tenth on the sum, which is mostly process floors, and by 2× on
+the files where parsing is the cost. tree-sitter reports a syntax error on
+four of these files (`compiler/types.ts`, `compiler/transformers/utilities.ts`,
+`services/exportInfoMap.ts`, `lib/es2015.symbol.wellknown.d.ts`) that the
+compiler and this package accept. gramide's listing carries more (fields,
+bindings, namespaces, owners on every method: 48,691 rows to 19,300), so the
+listing rows compare more work against less.
+
 ## How it is written
 
 - **`src/lexer.almd`** — the JavaScript scanner told to read `>` one token

@@ -78,6 +78,30 @@ non-null の `!` は無いものとして読む)と、型への言及(注釈、�
 
 CI が回す fixture は [ci/README.md](ci/README.md) に。
 
+## tree-sitter との比較
+
+tree-sitter-typescript(`75b3874`)を tree-sitter ランタイム(`1b8407d`)の上で
+[bench/tree_sitter_ranges.c](bench/tree_sitter_ranges.c) から呼び、ファイルごとに新しい
+プロセスで、パースの合否と宣言の一覧を、両者交互に、3 回の最小値で計測
+([証拠](docs/evidence/tree-sitter-typescript-src.json)、方法は
+[bench/tree_sitter.py](bench/tree_sitter.py))。
+
+| TypeScript 5.9.3 `src/`、701 ファイル、20.6 MB | gramide | tree-sitter |
+|---|---:|---:|
+| パースの合否、全ファイルの合計 | 1.676 秒 | 1.837 秒 |
+| 宣言の一覧、全ファイルの合計 | 1.986 秒 | 2.054 秒 |
+| 200 KB 以上の 16 ファイル(7.9 MB)、合否 | 0.151 秒 | 0.305 秒 |
+| その 16 ファイル、一覧 | 0.277 秒 | 0.398 秒 |
+| `compiler/checker.ts`(3.1 MB)、合否 | 47 ms | 101 ms |
+| 空ファイル(プロセスの床) | 1.75 ms | 1.37 ms |
+
+合計ではほぼプロセスの床の勝負で 1 割速く、パースが費用になるファイルでは 2 倍速い。
+tree-sitter はこのうち 4 ファイル(`compiler/types.ts`、`compiler/transformers/utilities.ts`、
+`services/exportInfoMap.ts`、`lib/es2015.symbol.wellknown.d.ts`)に構文エラーを報告するが、
+コンパイラもこのパッケージも受理する。gramide の一覧はフィールド・束縛・namespace・
+全メソッドの所有者を含む(48,691 行に対して 19,300 行)ので、一覧の行は多い仕事と
+少ない仕事の比較になっている。
+
 ## 作り
 
 - **`src/lexer.almd`** — JavaScript のスキャナに `>` を 1 トークンずつ読ませたもの。
