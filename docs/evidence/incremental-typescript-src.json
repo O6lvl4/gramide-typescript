@@ -3,7 +3,7 @@
  "edits": 1000,
  "seed": 7,
  "verify_every": 50,
- "gramide_sha256": "f1bf1904596611ee1178ced2f3051e3541dadb63ab18792acf1060a8a252e5aa",
+ "gramide_sha256": "8385dad0319dcb1967fbe44468f7aebc2e4eab650b99fdd5d5b7b92c6c6199a6",
  "tree_sitter_harness_sha256": "460ecbe2c733656ac6daea0215c62d8a230e7a28e2c2947cb38c6b7d34ae2020",
  "files": [
   {
@@ -12,9 +12,9 @@
    "gramide": {
     "tool": "gramide",
     "edits": 1000,
-    "median_us": 78.3,
-    "p90_us": 100.9,
-    "max_us": 513.7,
+    "median_us": 20.7,
+    "p90_us": 34.0,
+    "max_us": 440.3,
     "fallbacks": 0,
     "mismatches": 0,
     "initial_mismatch": false,
@@ -27,7 +27,7 @@
      "error_near": 0
     },
     "whole_parse_samples": 20,
-    "whole_parse_median_us": 9048.3,
+    "whole_parse_median_us": 8738.6,
     "items": 4667,
     "items_renamed_median": 0,
     "items_renamed_p90": 0,
@@ -37,9 +37,9 @@
    "tree_sitter": {
     "tool": "tree-sitter",
     "edits": 1000,
-    "median_us": 120.0,
-    "p90_us": 138.0,
-    "max_us": 180.0,
+    "median_us": 117.0,
+    "p90_us": 135.0,
+    "max_us": 177.0,
     "errors_at_end": 0,
     "first_error_edit": -1
    }
@@ -50,9 +50,9 @@
    "gramide": {
     "tool": "gramide",
     "edits": 1000,
-    "median_us": 151.7,
-    "p90_us": 201.1,
-    "max_us": 880.7,
+    "median_us": 82.7,
+    "p90_us": 120.6,
+    "max_us": 630.9,
     "fallbacks": 0,
     "mismatches": 0,
     "initial_mismatch": false,
@@ -65,7 +65,7 @@
      "error_near": 0
     },
     "whole_parse_samples": 20,
-    "whole_parse_median_us": 55362.7,
+    "whole_parse_median_us": 55532.8,
     "items": 25587,
     "items_renamed_median": 0,
     "items_renamed_p90": 0,
@@ -75,9 +75,9 @@
    "tree_sitter": {
     "tool": "tree-sitter",
     "edits": 1000,
-    "median_us": 562.0,
-    "p90_us": 592.0,
-    "max_us": 697.0,
+    "median_us": 570.0,
+    "p90_us": 616.0,
+    "max_us": 1435.0,
     "errors_at_end": 0,
     "first_error_edit": -1
    }
