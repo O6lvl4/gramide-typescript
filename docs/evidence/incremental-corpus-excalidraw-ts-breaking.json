@@ -1,0 +1,38 @@
+{
+  "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
+  "binary_sha256": "58bcb5ee5cd2aa10ab2ef47db98b2e8494cd1f208e7a6567518896a350a327c5",
+  "root": "/Users/o6lvl4/workspace/github.com/O6lvl4/almide-references/excalidraw/packages/excalidraw",
+  "ext": [
+    ".ts"
+  ],
+  "excluded": [],
+  "edits_per_file": 10,
+  "breaking": true,
+  "files": 187,
+  "checked": 178,
+  "edits": 1780,
+  "mismatches": 0,
+  "fallbacks": 160,
+  "fallback_reasons": {
+    "no_lex": 0,
+    "no_head": 0,
+    "no_parse": 160,
+    "no_site": 0,
+    "root_own": 0,
+    "error_near": 0
+  },
+  "skipped_no_long_word": [
+    "actions/register.ts",
+    "components/CommandPalette/defaultCommandPaletteItems.ts",
+    "css.d.ts",
+    "fonts/index.ts",
+    "hooks/useEmitter.ts",
+    "hooks/useStable.ts",
+    "pwacompat.d.ts",
+    "react-app-env.d.ts",
+    "tests/helpers/colorize.ts"
+  ],
+  "errors": [],
+  "mismatched_files": [],
+  "reference_commit": "a9186480121afc16ccdec789fc533e6a9ee68c10"
+}

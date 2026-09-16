@@ -135,6 +135,52 @@ The MUI demos average 2 KB, so that sum is the process floor; App.tsx shows
 the parse. tree-sitter's tsx grammar reports a syntax error on two Excalidraw
 test files the compiler and this package accept.
 
+### One keystroke
+
+An editor does not parse the file again on every keystroke; it hands the
+parser the edit. gramide keeps a parsed file as its recover items — here,
+every top-level declaration and every statement or class member inside
+braces — and re-reads the smallest one an edit touched
+([how](https://github.com/O6lvl4/gramide/blob/main/docs/incremental.md)).
+The same 1,000 edits, in-process, for gramide's `reparse-bench` and for
+tree-sitter's `ts_tree_edit` + reparse through the same C harness (each a
+letter typed or deleted six letters into a word of thirteen or more, so
+the file stays what it was syntactically); every fiftieth result checked
+against a whole parse ([evidence](docs/evidence/incremental-typescript-src.json),
+[evidence](docs/evidence/incremental-excalidraw-tsx.json)):
+
+| median over 1,000 edits | gramide | tree-sitter | a whole parse |
+|---|---:|---:|---:|
+| `compiler/parser.ts` (540 KB) | 75 µs | 128 µs | 9.5 ms |
+| `compiler/checker.ts` (3.1 MB, one function of 2.9 MB) | 126 µs | 565 µs | 57 ms |
+| Excalidraw `components/App.tsx` (465 KB) | 72 µs | 220 µs | 9.4 ms |
+
+`checker.ts` is where a whole parse per keystroke is out of the question
+and where tree-sitter's reparse is slowest; the deepest item holding the
+edit is one statement, and that is all gramide reads.
+
+What comes out is the whole parse: ten random edits in each file of three
+corpora, every one checked token for token and node for node against a
+whole parse of the same text ([evidence](docs/evidence/incremental-corpus-typescript-src.json),
+[evidence](docs/evidence/incremental-corpus-mui-docs-tsx.json),
+[evidence](docs/evidence/incremental-corpus-excalidraw-ts.json)):
+
+| corpus | files | edits | differences | read as a whole file |
+|---|---:|---:|---:|---:|
+| TypeScript 5.9.3 `src/` | 643 | 6,430 | 0 | 130, all in files whose top level holds no item (there are 24) |
+| MUI docs `.tsx` | 489 | 4,890 | 0 | 0 |
+| Excalidraw `.ts` | 178 | 1,780 | 0 | 0 |
+
+With an unmatched `{` typed every tenth edit, so that the file stops
+parsing and the check runs against the recovering parse, still no
+difference; 654, 460 and 160 of those edits read the whole file — the
+breaking ones, the windows inside the damage, and a JSX text a brace
+cannot lex ([evidence](docs/evidence/incremental-corpus-typescript-src-breaking.json),
+[evidence](docs/evidence/incremental-corpus-mui-docs-tsx-breaking.json),
+[evidence](docs/evidence/incremental-corpus-excalidraw-ts-breaking.json)).
+`ci/incremental_check.py` runs these; `reparse --edit START:OLD_END:NEW_END --new FILE`
+is the one-edit command.
+
 ## How it is written
 
 - **`src/lexer.almd`** — the JavaScript scanner told to read `>` one token

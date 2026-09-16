@@ -119,6 +119,48 @@ MUI のデモは平均 2 KB で、その合計はプロセスの床。App.tsx �
 tree-sitter の tsx 文法は Excalidraw のテスト 2 ファイルに構文エラーを報告するが、
 コンパイラもこのパッケージも受理する。
 
+### キー入力 1 回
+
+エディタはキー入力のたびに全文をパースし直さず、パーサに編集を渡す。gramide はパース済みの
+ファイルを回復項目(ここではトップレベルの宣言と、波括弧の中の文・クラスメンバ)として持ち、
+編集が触れた最小の項目だけを読み直す
+([仕組み](https://github.com/O6lvl4/gramide/blob/main/docs/incremental.md))。
+同じ 1,000 編集をプロセス内で、gramide の `reparse-bench` と tree-sitter の
+`ts_tree_edit` + 再パース(同じ C ハーネス)に与える。各編集は 13 文字以上の単語の 6 文字目に
+1 文字を打つか消すもので、構文は変わらない。50 回ごとに全文パースと照合
+([証拠](docs/evidence/incremental-typescript-src.json)、
+[証拠](docs/evidence/incremental-excalidraw-tsx.json)):
+
+| 1,000 編集の中央値 | gramide | tree-sitter | 参考: 全文パース |
+|---|---:|---:|---:|
+| `compiler/parser.ts`(540 KB) | 75 µs | 128 µs | 9.5 ms |
+| `compiler/checker.ts`(3.1 MB、うち 2.9 MB が 1 つの関数) | 126 µs | 565 µs | 57 ms |
+| Excalidraw `components/App.tsx`(465 KB) | 72 µs | 220 µs | 9.4 ms |
+
+`checker.ts` はキー入力ごとの全文パースが論外で、tree-sitter の再パースも最も遅いファイル。
+編集を含む最も深い項目は 1 つの文で、gramide が読むのはそれだけ。
+
+出てくるものは全文パースと同じ。3 コーパスの各ファイルに 10 回ずつランダム編集し、すべて
+同じテキストの全文パースとトークン単位・ノード単位で照合
+([証拠](docs/evidence/incremental-corpus-typescript-src.json)、
+[証拠](docs/evidence/incremental-corpus-mui-docs-tsx.json)、
+[証拠](docs/evidence/incremental-corpus-excalidraw-ts.json)):
+
+| コーパス | ファイル | 編集 | 差 | 全文読み直し |
+|---|---:|---:|---:|---:|
+| TypeScript 5.9.3 `src/` | 643 | 6,430 | 0 | 130。すべてトップレベルに項目が無いファイル(24 ある)|
+| MUI docs `.tsx` | 489 | 4,890 | 0 | 0 |
+| Excalidraw `.ts` | 178 | 1,780 | 0 | 0 |
+
+10 回に 1 回、対応のない `{` を打ってファイルを壊し、回復パースと照合しても差は 0。
+それぞれ 654、460、160 編集が全文読み直し(壊した編集、壊れた箇所の中の窓、波括弧で
+字句解析できない JSX テキスト)
+([証拠](docs/evidence/incremental-corpus-typescript-src-breaking.json)、
+[証拠](docs/evidence/incremental-corpus-mui-docs-tsx-breaking.json)、
+[証拠](docs/evidence/incremental-corpus-excalidraw-ts-breaking.json))。
+`ci/incremental_check.py` がこれを回し、`reparse --edit START:OLD_END:NEW_END --new FILE` が
+1 編集のコマンド。
+
 ## 作り
 
 - **`src/lexer.almd`** — JavaScript のスキャナに `>` を 1 トークンずつ読ませたもの。

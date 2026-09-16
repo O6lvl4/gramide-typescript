@@ -29,5 +29,14 @@ with tempfile.TemporaryDirectory() as tmp:
     run("check", tsx)
     doc = json.loads(run("symbols", tsx))
     assert doc["lang"] == "tsx" and doc["complete"] is True and [s["name"] for s in doc["symbols"] if s["kind"] == "function"] == ["View", "pick"], doc
+    # the incremental reader: twenty keystrokes, each checked against the whole parse
+    keys = root / ("keys.ts")
+    keys.write_text("const longIdentifierName: number = 1\nexport function anotherLongName(): number { return longIdentifierName + 1 }\n")
+    report = json.loads(run("reparse-bench", keys, "--edits", "20", "--verify", "1", "--seed", "3").splitlines()[-1])
+    assert report["mismatches"] == 0 and report["initial_mismatch"] is False and report["fallbacks"] == 0, report
+    edited = root / ("keys-edited.ts")
+    edited.write_text(keys.read_text().replace("longIdentifierName", "longIdentifierNamed", 1))
+    at = keys.read_text().index("longIdentifierName") + len("longIdentifierName")
+    assert "anotherLongName" in run("reparse", keys, "--edit", f"{at}:{at}:{at + 1}", "--new", edited)
     assert run("version").splitlines()[0].startswith("gramide_typescript ")
 print("CLI smoke passed: .ts .mts .cts .tsx check, outline, symbols and recovered outline")

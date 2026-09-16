@@ -1,0 +1,76 @@
+{
+ "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
+ "edits": 1000,
+ "seed": 7,
+ "verify_every": 50,
+ "gramide_sha256": "58bcb5ee5cd2aa10ab2ef47db98b2e8494cd1f208e7a6567518896a350a327c5",
+ "tree_sitter_harness_sha256": "460ecbe2c733656ac6daea0215c62d8a230e7a28e2c2947cb38c6b7d34ae2020",
+ "files": [
+  {
+   "path": "/Users/o6lvl4/workspace/github.com/O6lvl4/almide-references/TypeScript-5.9/src/compiler/parser.ts",
+   "bytes": 539588,
+   "gramide": {
+    "tool": "gramide",
+    "edits": 1000,
+    "median_us": 75.0,
+    "p90_us": 272.5,
+    "max_us": 4956.1,
+    "fallbacks": 0,
+    "mismatches": 0,
+    "initial_mismatch": false,
+    "fallback_reasons": {
+     "no_lex": 0,
+     "no_head": 0,
+     "no_parse": 0,
+     "no_site": 0,
+     "root_own": 0,
+     "error_near": 0
+    },
+    "whole_parse_samples": 20,
+    "whole_parse_median_us": 9494.5
+   },
+   "tree_sitter": {
+    "tool": "tree-sitter",
+    "edits": 1000,
+    "median_us": 128.0,
+    "p90_us": 148.0,
+    "max_us": 295.0,
+    "errors_at_end": 0,
+    "first_error_edit": -1
+   }
+  },
+  {
+   "path": "/Users/o6lvl4/workspace/github.com/O6lvl4/almide-references/TypeScript-5.9/src/compiler/checker.ts",
+   "bytes": 3121747,
+   "gramide": {
+    "tool": "gramide",
+    "edits": 1000,
+    "median_us": 125.6,
+    "p90_us": 255.5,
+    "max_us": 1405.0,
+    "fallbacks": 0,
+    "mismatches": 0,
+    "initial_mismatch": false,
+    "fallback_reasons": {
+     "no_lex": 0,
+     "no_head": 0,
+     "no_parse": 0,
+     "no_site": 0,
+     "root_own": 0,
+     "error_near": 0
+    },
+    "whole_parse_samples": 20,
+    "whole_parse_median_us": 56635.9
+   },
+   "tree_sitter": {
+    "tool": "tree-sitter",
+    "edits": 1000,
+    "median_us": 565.0,
+    "p90_us": 592.0,
+    "max_us": 664.0,
+    "errors_at_end": 0,
+    "first_error_edit": -1
+   }
+  }
+ ]
+}
