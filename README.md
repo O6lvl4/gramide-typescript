@@ -154,9 +154,9 @@ against a whole parse ([evidence](docs/evidence/incremental-typescript-src.json)
 
 | median over 1,000 edits | gramide | tree-sitter | a whole parse |
 |---|---:|---:|---:|
-| `compiler/parser.ts` (540 KB) | 21 µs | 117 µs | 8.7 ms |
-| `compiler/checker.ts` (3.1 MB, one function of 2.9 MB) | 83 µs | 570 µs | 56 ms |
-| Excalidraw `components/App.tsx` (465 KB) | 18 µs | 221 µs | 9.2 ms |
+| `compiler/parser.ts` (540 KB) | 25 µs | 130 µs | 9.6 ms |
+| `compiler/checker.ts` (3.1 MB, one function of 2.9 MB) | 82 µs | 568 µs | 57 ms |
+| Excalidraw `components/App.tsx` (465 KB) | 18 µs | 221 µs | 9.4 ms |
 
 `checker.ts` is where a whole parse per keystroke is out of the question
 and where tree-sitter's reparse is slowest; the deepest item holding the
