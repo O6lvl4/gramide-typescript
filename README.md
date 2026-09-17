@@ -154,9 +154,9 @@ against a whole parse ([evidence](docs/evidence/incremental-typescript-src.json)
 
 | median over 1,000 edits | gramide | tree-sitter | a whole parse |
 |---|---:|---:|---:|
-| `compiler/parser.ts` (540 KB) | 26 µs | 128 µs | 9.5 ms |
-| `compiler/checker.ts` (3.1 MB, one function of 2.9 MB) | 88 µs | 593 µs | 58 ms |
-| Excalidraw `components/App.tsx` (465 KB) | 22 µs | 234 µs | 9.7 ms |
+| `compiler/parser.ts` (540 KB) | 18 µs | 120 µs | 9.0 ms |
+| `compiler/checker.ts` (3.1 MB, one function of 2.9 MB) | 75 µs | 563 µs | 55 ms |
+| Excalidraw `components/App.tsx` (465 KB) | 16 µs | 221 µs | 9.3 ms |
 
 `checker.ts` is where a whole parse per keystroke is out of the question
 and where tree-sitter's reparse is slowest; the deepest item holding the
@@ -207,7 +207,11 @@ appears ([evidence](docs/evidence/recovery-typescript-src.json), [how it recover
 Ahead on every kind of break. The `)` deleted inside a member's head, which
 once cost the class every member after it, is read with the `)` taken as there
 where the member failed. tree-sitter still keeps slightly more declarations in
-total, on a `}` deleted from a method, where the class body runs on.
+total, on a `}` deleted from a method, where the class body runs on. What a
+heavily broken file costs is measured too: `checker.ts` with 100 `)` deleted
+reads its outline in 0.13 s, with 500 in 7.64 s, against tree-sitter's
+0.24 s ([evidence](docs/evidence/recovery-cost-checker-ts.json),
+`bench/recovery_cost.py`).
 
 ## How it is written
 

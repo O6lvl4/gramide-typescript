@@ -22,36 +22,36 @@
   "total": {
    "breaks": 2588,
    "baseline": 104120,
-   "kept": 102272,
-   "lost_touching": 311,
-   "lost_collateral": 1537,
+   "kept": 102273,
+   "lost_touching": 308,
+   "lost_collateral": 1539,
    "spurious": 217,
    "clean_breaks": 2465,
    "no_error_reported": 2588,
-   "error_nodes": 18834
+   "error_nodes": 18813
   },
   "by_break": [
    {
     "breaks": 697,
     "baseline": 26033,
-    "kept": 25774,
-    "lost_touching": 83,
-    "lost_collateral": 176,
+    "kept": 25773,
+    "lost_touching": 82,
+    "lost_collateral": 178,
     "spurious": 21,
     "clean_breaks": 675,
     "no_error_reported": 697,
-    "error_nodes": 4299
+    "error_nodes": 4292
    },
    {
     "breaks": 607,
     "baseline": 26028,
-    "kept": 25036,
-    "lost_touching": 139,
+    "kept": 25038,
+    "lost_touching": 137,
     "lost_collateral": 853,
     "spurious": 191,
     "clean_breaks": 535,
     "no_error_reported": 607,
-    "error_nodes": 5687
+    "error_nodes": 5675
    },
    {
     "breaks": 587,
@@ -73,7 +73,7 @@
     "spurious": 4,
     "clean_breaks": 671,
     "no_error_reported": 697,
-    "error_nodes": 4259
+    "error_nodes": 4257
    }
   ],
   "worst": [
@@ -303,5 +303,5 @@
  "both_lost_collateral": 55,
  "only_gramide_lost_collateral": 48,
  "only_tree_sitter_lost_collateral": 79,
- "seconds": 52.3
+ "seconds": 48.5
 }

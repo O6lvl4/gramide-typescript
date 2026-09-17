@@ -1,0 +1,38 @@
+{
+ "file": "checker.ts",
+ "bytes": 3067971,
+ "seed": 3,
+ "rows": [
+  {
+   "parens_deleted": 0,
+   "gramide_seconds": 0.072,
+   "tree_sitter_seconds": 0.138,
+   "gramide_outline_lines": 2650
+  },
+  {
+   "parens_deleted": 50,
+   "gramide_seconds": 0.125,
+   "tree_sitter_seconds": 0.141,
+   "gramide_outline_lines": 2650
+  },
+  {
+   "parens_deleted": 100,
+   "gramide_seconds": 0.134,
+   "tree_sitter_seconds": 0.143,
+   "gramide_outline_lines": 2650
+  },
+  {
+   "parens_deleted": 200,
+   "gramide_seconds": 2.078,
+   "tree_sitter_seconds": 0.146,
+   "gramide_outline_lines": 2925
+  },
+  {
+   "parens_deleted": 500,
+   "gramide_seconds": 7.639,
+   "tree_sitter_seconds": 0.242,
+   "gramide_outline_lines": 2898
+  }
+ ],
+ "intact_lines": 2650
+}

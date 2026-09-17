@@ -136,9 +136,9 @@ tree-sitter の tsx 文法は Excalidraw のテスト 2 ファイルに構文エ
 
 | 1,000 編集の中央値 | gramide | tree-sitter | 参考: 全文パース |
 |---|---:|---:|---:|
-| `compiler/parser.ts`(540 KB) | 26 µs | 128 µs | 9.5 ms |
-| `compiler/checker.ts`(3.1 MB、うち 2.9 MB が 1 つの関数) | 88 µs | 593 µs | 58 ms |
-| Excalidraw `components/App.tsx`(465 KB) | 22 µs | 234 µs | 9.7 ms |
+| `compiler/parser.ts`(540 KB) | 18 µs | 120 µs | 9.0 ms |
+| `compiler/checker.ts`(3.1 MB、うち 2.9 MB が 1 つの関数) | 75 µs | 563 µs | 55 ms |
+| Excalidraw `components/App.tsx`(465 KB) | 16 µs | 221 µs | 9.3 ms |
 
 `checker.ts` はキー入力ごとの全文パースが論外で、tree-sitter の再パースも最も遅いファイル。
 編集を含む最も深い項目は 1 つの文で、gramide が読むのはそれだけ。
@@ -184,7 +184,9 @@ tree-sitter の tsx 文法は Excalidraw のテスト 2 ファイルに構文エ
 
 4 通りすべてで gramide が上。メンバの頭の中で `)` を消すと以前はクラスの後続メンバを全部失って
 いたが、今はメンバが失敗した位置に `)` があるものとして読み直す。残った宣言の総数では tree-sitter が
-僅かに上で、メソッドの `}` を消してクラス本体が閉じなくなる場合の差。
+僅かに上で、メソッドの `}` を消してクラス本体が閉じなくなる場合の差。大きく壊れたファイルの
+コストも測ってある。`checker.ts` から `)` を 100 個消した outline は 0.13 秒、500 個で 7.64 秒、
+tree-sitter は 0.24 秒([証拠](docs/evidence/recovery-cost-checker-ts.json)、`bench/recovery_cost.py`)。
 
 ## 作り
 
