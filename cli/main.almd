@@ -66,9 +66,9 @@ effect fn main() -> Unit = {
   // written down, which is what src/table.almd is
   if list.first(argv) == some("gen-table") then println(tables.render("typescript", grammar.rules()))
   else if list.first(argv) == some("gen-table-tsx") then println(tables.render("tsx", grammar.rules_tsx()))
-  else if list.first(argv) == some("lex-check") then lex_check(list.drop(argv, 1))
+  else if list.first(argv) == some("lex-check") then lex_check(list.drop(argv, 1))!
   else match cli.batch_of(argv) {
-    some((cmd, paths)) => cli.report(parallel(cmd, paths)!),
-    none => cli.run(cli.Program { name: "gramide_typescript", version: pkg.VERSION, packages: packages() }, argv),
+    some((cmd, paths)) => cli.report(parallel(cmd, paths)!)!,
+    none => cli.run(cli.Program { name: "gramide_typescript", version: pkg.VERSION, packages: packages() }, argv)!,
   }
 }
