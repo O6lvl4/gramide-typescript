@@ -154,9 +154,9 @@ against a whole parse ([evidence](docs/evidence/incremental-typescript-src.json)
 
 | median over 1,000 edits | gramide | tree-sitter | a whole parse |
 |---|---:|---:|---:|
-| `compiler/parser.ts` (540 KB) | 17 µs | 119 µs | 8.9 ms |
-| `compiler/checker.ts` (3.1 MB, one function of 2.9 MB) | 78 µs | 561 µs | 54 ms |
-| Excalidraw `components/App.tsx` (465 KB) | 15 µs | 221 µs | 9.3 ms |
+| `compiler/parser.ts` (540 KB) | 26 µs | 128 µs | 9.5 ms |
+| `compiler/checker.ts` (3.1 MB, one function of 2.9 MB) | 88 µs | 593 µs | 58 ms |
+| Excalidraw `components/App.tsx` (465 KB) | 22 µs | 234 µs | 9.7 ms |
 
 `checker.ts` is where a whole parse per keystroke is out of the question
 and where tree-sitter's reparse is slowest; the deepest item holding the
@@ -197,16 +197,17 @@ appears ([evidence](docs/evidence/recovery-typescript-src.json), [how it recover
 
 | TypeScript `src/`: 697 files, 2,588 breaks | gramide | tree-sitter |
 |---|---:|---:|
-| declarations kept, all breaks | 97.3% | 99.0% |
-| clean breaks (nothing lost beyond the break, nothing invented) | 91.5% | 94.6% |
-| clean breaks, `insert {` | 94.0% | 96.4% |
-| clean breaks, `delete }` | 84.3% | 86.7% |
-| clean breaks, `delete )` | 91.3% | 98.8% |
-| clean breaks, `insert (` | 95.4% | 96.1% |
+| declarations kept, all breaks | 98.2% | 99.0% |
+| clean breaks (nothing lost beyond the break, nothing invented) | 95.2% | 94.6% |
+| clean breaks, `insert {` | 96.8% | 96.4% |
+| clean breaks, `delete }` | 88.1% | 86.7% |
+| clean breaks, `delete )` | 99.5% | 98.8% |
+| clean breaks, `insert (` | 96.3% | 96.1% |
 
-tree-sitter is ahead, mostly on a `)` deleted inside a member's head: the
-member fails, the skip resumes inside it, and the method's `}` then closes the
-class, so every later member reads as statements.
+Ahead on every kind of break. The `)` deleted inside a member's head, which
+once cost the class every member after it, is read with the `)` taken as there
+where the member failed. tree-sitter still keeps slightly more declarations in
+total, on a `}` deleted from a method, where the class body runs on.
 
 ## How it is written
 

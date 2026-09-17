@@ -22,58 +22,58 @@
   "total": {
    "breaks": 2588,
    "baseline": 104120,
-   "kept": 101308,
-   "lost_touching": 614,
-   "lost_collateral": 2198,
-   "spurious": 237,
-   "clean_breaks": 2368,
+   "kept": 102272,
+   "lost_touching": 311,
+   "lost_collateral": 1537,
+   "spurious": 217,
+   "clean_breaks": 2465,
    "no_error_reported": 2588,
-   "error_nodes": 22034
+   "error_nodes": 18834
   },
   "by_break": [
    {
     "breaks": 697,
     "baseline": 26033,
-    "kept": 25587,
-    "lost_touching": 149,
-    "lost_collateral": 297,
-    "spurious": 23,
-    "clean_breaks": 655,
+    "kept": 25774,
+    "lost_touching": 83,
+    "lost_collateral": 176,
+    "spurious": 21,
+    "clean_breaks": 675,
     "no_error_reported": 697,
-    "error_nodes": 4764
+    "error_nodes": 4299
    },
    {
     "breaks": 607,
     "baseline": 26028,
-    "kept": 24871,
-    "lost_touching": 201,
-    "lost_collateral": 956,
-    "spurious": 207,
-    "clean_breaks": 512,
+    "kept": 25036,
+    "lost_touching": 139,
+    "lost_collateral": 853,
+    "spurious": 191,
+    "clean_breaks": 535,
     "no_error_reported": 607,
-    "error_nodes": 6985
+    "error_nodes": 5687
    },
    {
     "breaks": 587,
     "baseline": 26026,
-    "kept": 25390,
-    "lost_touching": 181,
-    "lost_collateral": 455,
-    "spurious": 2,
-    "clean_breaks": 536,
+    "kept": 25974,
+    "lost_touching": 22,
+    "lost_collateral": 30,
+    "spurious": 1,
+    "clean_breaks": 584,
     "no_error_reported": 587,
-    "error_nodes": 5872
+    "error_nodes": 4589
    },
    {
     "breaks": 697,
     "baseline": 26033,
-    "kept": 25460,
-    "lost_touching": 83,
-    "lost_collateral": 490,
-    "spurious": 5,
-    "clean_breaks": 665,
+    "kept": 25488,
+    "lost_touching": 67,
+    "lost_collateral": 478,
+    "spurious": 4,
+    "clean_breaks": 671,
     "no_error_reported": 697,
-    "error_nodes": 4413
+    "error_nodes": 4259
    }
   ],
   "worst": [
@@ -110,14 +110,6 @@
     3072
    ],
    [
-    93,
-    0,
-    "harness/client.ts",
-    "delete )",
-    7965,
-    235
-   ],
-   [
     91,
     0,
     "server/project.ts",
@@ -134,14 +126,6 @@
     282
    ],
    [
-    88,
-    0,
-    "harness/client.ts",
-    "delete }",
-    10146,
-    276
-   ],
-   [
     84,
     0,
     "services/types.ts",
@@ -156,6 +140,22 @@
     "delete }",
     33945,
     847
+   ],
+   [
+    63,
+    0,
+    "services/textChanges.ts",
+    "insert (",
+    19628,
+    556
+   ],
+   [
+    36,
+    0,
+    "harness/incrementalUtils.ts",
+    "delete }",
+    2364,
+    46
    ]
   ]
  },
@@ -301,7 +301,7 @@
   ]
  },
  "both_lost_collateral": 55,
- "only_gramide_lost_collateral": 129,
+ "only_gramide_lost_collateral": 48,
  "only_tree_sitter_lost_collateral": 79,
- "seconds": 36.1
+ "seconds": 52.3
 }
