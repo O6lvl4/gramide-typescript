@@ -1,6 +1,6 @@
 {
   "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
-  "binary_sha256": "54d2a3775889de9ee035910ec9908069b15073e78b482bc721d1ad2613d15603",
+  "binary_sha256": "c6624fee2a7b5193c919878c7db14ec978894fddd4093f993211367bd16bb64b",
   "root": "/Users/o6lvl4/workspace/github.com/O6lvl4/almide-references/TypeScript-5.9/src",
   "ext": [
     ".ts",

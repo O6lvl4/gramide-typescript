@@ -1,28 +1,26 @@
 {
   "platform": "macOS-26.3-arm64-arm-64bit-Mach-O",
-  "binary_sha256": "58bcb5ee5cd2aa10ab2ef47db98b2e8494cd1f208e7a6567518896a350a327c5",
+  "binary_sha256": "c6624fee2a7b5193c919878c7db14ec978894fddd4093f993211367bd16bb64b",
   "root": "/Users/o6lvl4/workspace/github.com/O6lvl4/almide-references/TypeScript-5.9/src",
   "ext": [
     ".ts",
     ".mts",
     ".cts"
   ],
-  "excluded": [
-    "testdata"
-  ],
+  "excluded": [],
   "edits_per_file": 10,
   "breaking": true,
   "files": 701,
   "checked": 643,
   "edits": 6430,
   "mismatches": 0,
-  "fallbacks": 654,
+  "fallbacks": 524,
   "fallback_reasons": {
     "no_lex": 4,
     "no_head": 0,
     "no_parse": 520,
     "no_site": 0,
-    "root_own": 130,
+    "root_own": 0,
     "error_near": 0
   },
   "skipped_no_long_word": [

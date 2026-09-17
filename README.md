@@ -154,9 +154,9 @@ against a whole parse ([evidence](docs/evidence/incremental-typescript-src.json)
 
 | median over 1,000 edits | gramide | tree-sitter | a whole parse |
 |---|---:|---:|---:|
-| `compiler/parser.ts` (540 KB) | 25 µs | 130 µs | 9.6 ms |
-| `compiler/checker.ts` (3.1 MB, one function of 2.9 MB) | 82 µs | 568 µs | 57 ms |
-| Excalidraw `components/App.tsx` (465 KB) | 18 µs | 221 µs | 9.4 ms |
+| `compiler/parser.ts` (540 KB) | 17 µs | 119 µs | 8.9 ms |
+| `compiler/checker.ts` (3.1 MB, one function of 2.9 MB) | 78 µs | 561 µs | 54 ms |
+| Excalidraw `components/App.tsx` (465 KB) | 15 µs | 221 µs | 9.3 ms |
 
 `checker.ts` is where a whole parse per keystroke is out of the question
 and where tree-sitter's reparse is slowest; the deepest item holding the
@@ -183,6 +183,30 @@ cannot lex ([evidence](docs/evidence/incremental-corpus-typescript-src-breaking.
 [evidence](docs/evidence/incremental-corpus-excalidraw-ts-breaking.json)).
 `ci/incremental_check.py` runs these; `reparse --edit START:OLD_END:NEW_END --new FILE`
 is the one-edit command.
+
+### A broken file
+
+An editor's file is broken more often than not. `bench/recovery.py` breaks every
+file of the corpus in four ways, one at a time — a `{` typed at the start of a
+word, a `}` deleted, a `)` deleted, a `(` typed — and compares what each tool
+still lists (gramide's `outline`, which reads the recovered parse; tree-sitter's
+tree through the same harness, `--recover`) with its own listing of the whole
+file, by kind, name and start line. A declaration whose lines hold the break is
+expected to go; a break is *clean* when nothing else is lost and nothing new
+appears ([evidence](docs/evidence/recovery-typescript-src.json), [how it recovers](https://github.com/O6lvl4/gramide/blob/main/docs/recovery.md)):
+
+| TypeScript `src/`: 697 files, 2,588 breaks | gramide | tree-sitter |
+|---|---:|---:|
+| declarations kept, all breaks | 97.3% | 99.0% |
+| clean breaks (nothing lost beyond the break, nothing invented) | 91.5% | 94.6% |
+| clean breaks, `insert {` | 94.0% | 96.4% |
+| clean breaks, `delete }` | 84.3% | 86.7% |
+| clean breaks, `delete )` | 91.3% | 98.8% |
+| clean breaks, `insert (` | 95.4% | 96.1% |
+
+tree-sitter is ahead, mostly on a `)` deleted inside a member's head: the
+member fails, the skip resumes inside it, and the method's `}` then closes the
+class, so every later member reads as statements.
 
 ## How it is written
 

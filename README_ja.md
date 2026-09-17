@@ -136,9 +136,9 @@ tree-sitter の tsx 文法は Excalidraw のテスト 2 ファイルに構文エ
 
 | 1,000 編集の中央値 | gramide | tree-sitter | 参考: 全文パース |
 |---|---:|---:|---:|
-| `compiler/parser.ts`(540 KB) | 25 µs | 130 µs | 9.6 ms |
-| `compiler/checker.ts`(3.1 MB、うち 2.9 MB が 1 つの関数) | 82 µs | 568 µs | 57 ms |
-| Excalidraw `components/App.tsx`(465 KB) | 18 µs | 221 µs | 9.4 ms |
+| `compiler/parser.ts`(540 KB) | 17 µs | 119 µs | 8.9 ms |
+| `compiler/checker.ts`(3.1 MB、うち 2.9 MB が 1 つの関数) | 78 µs | 561 µs | 54 ms |
+| Excalidraw `components/App.tsx`(465 KB) | 15 µs | 221 µs | 9.3 ms |
 
 `checker.ts` はキー入力ごとの全文パースが論外で、tree-sitter の再パースも最も遅いファイル。
 編集を含む最も深い項目は 1 つの文で、gramide が読むのはそれだけ。
@@ -163,6 +163,27 @@ tree-sitter の tsx 文法は Excalidraw のテスト 2 ファイルに構文エ
 [証拠](docs/evidence/incremental-corpus-excalidraw-ts-breaking.json))。
 `ci/incremental_check.py` がこれを回し、`reparse --edit START:OLD_END:NEW_END --new FILE` が
 1 編集のコマンド。
+
+### 壊れたファイル
+
+エディタの中のファイルは壊れていることの方が多い。`bench/recovery.py` はコーパスの全ファイルを
+4 通りに 1 箇所ずつ壊し(単語の頭に `{` を打つ、`}` を消す、`)` を消す、`(` を打つ)、
+各ツールがまだ列挙できるもの(gramide は回復パースの上の `outline`、tree-sitter は同じ
+ハーネスの `--recover` で木から)を、そのツール自身の無傷のファイルでの列挙と、種別・名前・
+開始行で比べる。壊した箇所を含む宣言が消えるのは当然で、それ以外を失わず余計なものも出さ
+なかった破壊を「きれい」と数える([証拠](docs/evidence/recovery-typescript-src.json)、[仕組み](https://github.com/O6lvl4/gramide/blob/main/docs/recovery.md)):
+
+| TypeScript `src/`: 697 ファイル、2,588 回の破壊 | gramide | tree-sitter |
+|---|---:|---:|
+| 残った宣言(全破壊) | 97.3% | 99.0% |
+| きれいに回復した破壊(壊した箇所以外を失わず、余計なものも出さない) | 91.5% | 94.6% |
+| きれいに回復、`insert {` | 94.0% | 96.4% |
+| きれいに回復、`delete }` | 84.3% | 86.7% |
+| きれいに回復、`delete )` | 91.3% | 98.8% |
+| きれいに回復、`insert (` | 95.4% | 96.1% |
+
+tree-sitter が上。主にメンバの頭の中で `)` を消した場合で、メンバが失敗し、スキップの再開点が
+その中に落ち、メソッドの `}` がクラスを閉じてしまい、後続のメンバはすべて文として読まれる。
 
 ## 作り
 

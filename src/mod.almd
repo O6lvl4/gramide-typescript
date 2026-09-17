@@ -15,7 +15,7 @@ import self.symbols
 import self.table
 import self.table_tsx
 
-let VERSION = "0.3.8"
+let VERSION = "0.3.9"
 
 fn prepare_lexer() -> package_api.Tokenizer = {
   let prepared = lexer.tables()

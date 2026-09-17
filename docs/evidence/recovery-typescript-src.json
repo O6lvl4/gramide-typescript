@@ -1,0 +1,307 @@
+{
+ "root": "/Users/o6lvl4/workspace/github.com/O6lvl4/almide-references/TypeScript-5.9/src",
+ "kinds": [
+  "class",
+  "enum",
+  "function",
+  "interface",
+  "method",
+  "type"
+ ],
+ "files": 697,
+ "skipped_not_clean": 4,
+ "breaks_per_file": 4,
+ "seed": 7,
+ "break_kinds": [
+  "insert {",
+  "delete }",
+  "delete )",
+  "insert ("
+ ],
+ "gramide": {
+  "total": {
+   "breaks": 2588,
+   "baseline": 104120,
+   "kept": 101308,
+   "lost_touching": 614,
+   "lost_collateral": 2198,
+   "spurious": 237,
+   "clean_breaks": 2368,
+   "no_error_reported": 2588,
+   "error_nodes": 22034
+  },
+  "by_break": [
+   {
+    "breaks": 697,
+    "baseline": 26033,
+    "kept": 25587,
+    "lost_touching": 149,
+    "lost_collateral": 297,
+    "spurious": 23,
+    "clean_breaks": 655,
+    "no_error_reported": 697,
+    "error_nodes": 4764
+   },
+   {
+    "breaks": 607,
+    "baseline": 26028,
+    "kept": 24871,
+    "lost_touching": 201,
+    "lost_collateral": 956,
+    "spurious": 207,
+    "clean_breaks": 512,
+    "no_error_reported": 607,
+    "error_nodes": 6985
+   },
+   {
+    "breaks": 587,
+    "baseline": 26026,
+    "kept": 25390,
+    "lost_touching": 181,
+    "lost_collateral": 455,
+    "spurious": 2,
+    "clean_breaks": 536,
+    "no_error_reported": 587,
+    "error_nodes": 5872
+   },
+   {
+    "breaks": 697,
+    "baseline": 26033,
+    "kept": 25460,
+    "lost_touching": 83,
+    "lost_collateral": 490,
+    "spurious": 5,
+    "clean_breaks": 665,
+    "no_error_reported": 697,
+    "error_nodes": 4413
+   }
+  ],
+  "worst": [
+   [
+    234,
+    0,
+    "harness/fourslashImpl.ts",
+    "insert (",
+    27213,
+    645
+   ],
+   [
+    114,
+    0,
+    "server/session.ts",
+    "delete }",
+    84805,
+    1928
+   ],
+   [
+    112,
+    0,
+    "compiler/debug.ts",
+    "delete }",
+    6859,
+    232
+   ],
+   [
+    99,
+    0,
+    "harness/fourslashImpl.ts",
+    "delete }",
+    143725,
+    3072
+   ],
+   [
+    93,
+    0,
+    "harness/client.ts",
+    "delete )",
+    7965,
+    235
+   ],
+   [
+    91,
+    0,
+    "server/project.ts",
+    "delete }",
+    87364,
+    2174
+   ],
+   [
+    88,
+    1,
+    "harness/fourslashInterfaceImpl.ts",
+    "insert {",
+    10139,
+    282
+   ],
+   [
+    88,
+    0,
+    "harness/client.ts",
+    "delete }",
+    10146,
+    276
+   ],
+   [
+    84,
+    0,
+    "services/types.ts",
+    "insert (",
+    27768,
+    616
+   ],
+   [
+    66,
+    6,
+    "testRunner/unittests/helpers/virtualFileSystemWithWatch.ts",
+    "delete }",
+    33945,
+    847
+   ]
+  ]
+ },
+ "tree_sitter": {
+  "total": {
+   "breaks": 2588,
+   "baseline": 77189,
+   "kept": 76386,
+   "lost_touching": 151,
+   "lost_collateral": 652,
+   "spurious": 44,
+   "clean_breaks": 2448,
+   "no_error_reported": 746,
+   "error_nodes": 5474
+  },
+  "by_break": [
+   {
+    "breaks": 697,
+    "baseline": 19300,
+    "kept": 19141,
+    "lost_touching": 33,
+    "lost_collateral": 126,
+    "spurious": 10,
+    "clean_breaks": 672,
+    "no_error_reported": 324,
+    "error_nodes": 1229
+   },
+   {
+    "breaks": 607,
+    "baseline": 19296,
+    "kept": 19033,
+    "lost_touching": 81,
+    "lost_collateral": 182,
+    "spurious": 10,
+    "clean_breaks": 526,
+    "no_error_reported": 47,
+    "error_nodes": 1094
+   },
+   {
+    "breaks": 587,
+    "baseline": 19293,
+    "kept": 19207,
+    "lost_touching": 6,
+    "lost_collateral": 80,
+    "spurious": 7,
+    "clean_breaks": 580,
+    "no_error_reported": 49,
+    "error_nodes": 1125
+   },
+   {
+    "breaks": 697,
+    "baseline": 19300,
+    "kept": 19005,
+    "lost_touching": 31,
+    "lost_collateral": 264,
+    "spurious": 17,
+    "clean_breaks": 670,
+    "no_error_reported": 326,
+    "error_nodes": 2026
+   }
+  ],
+  "worst": [
+   [
+    87,
+    4,
+    "compiler/commandLineParser.ts",
+    "insert (",
+    89384,
+    2362
+   ],
+   [
+    61,
+    3,
+    "compiler/watchPublic.ts",
+    "insert {",
+    4726,
+    143
+   ],
+   [
+    59,
+    5,
+    "compiler/builder.ts",
+    "delete )",
+    39029,
+    938
+   ],
+   [
+    53,
+    0,
+    "server/project.ts",
+    "delete }",
+    87364,
+    2174
+   ],
+   [
+    40,
+    1,
+    "compiler/resolutionCache.ts",
+    "insert (",
+    36166,
+    833
+   ],
+   [
+    35,
+    6,
+    "services/codefixes/helpers.ts",
+    "insert (",
+    9064,
+    259
+   ],
+   [
+    27,
+    0,
+    "services/codefixes/convertToEsModule.ts",
+    "insert {",
+    12472,
+    294
+   ],
+   [
+    17,
+    0,
+    "compiler/transformers/ts.ts",
+    "insert (",
+    98449,
+    2392
+   ],
+   [
+    13,
+    0,
+    "harness/fourslashInterfaceImpl.ts",
+    "delete )",
+    28004,
+    751
+   ],
+   [
+    12,
+    0,
+    "lib/es2022.array.d.ts",
+    "delete }",
+    251,
+    7
+   ]
+  ]
+ },
+ "both_lost_collateral": 55,
+ "only_gramide_lost_collateral": 129,
+ "only_tree_sitter_lost_collateral": 79,
+ "seconds": 36.1
+}
