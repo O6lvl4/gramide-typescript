@@ -154,9 +154,9 @@ against a whole parse ([evidence](docs/evidence/incremental-typescript-src.json)
 
 | median over 1,000 edits | gramide | tree-sitter | a whole parse |
 |---|---:|---:|---:|
-| `compiler/parser.ts` (540 KB) | 18 µs | 120 µs | 9.0 ms |
-| `compiler/checker.ts` (3.1 MB, one function of 2.9 MB) | 75 µs | 563 µs | 55 ms |
-| Excalidraw `components/App.tsx` (465 KB) | 16 µs | 221 µs | 9.3 ms |
+| `compiler/parser.ts` (540 KB) | 15 µs | 120 µs | 9.1 ms |
+| `compiler/checker.ts` (3.1 MB, one function of 2.9 MB) | 54 µs | 561 µs | 58 ms |
+| Excalidraw `components/App.tsx` (465 KB) | 13 µs | 221 µs | 9.4 ms |
 
 `checker.ts` is where a whole parse per keystroke is out of the question
 and where tree-sitter's reparse is slowest; the deepest item holding the
@@ -210,7 +210,7 @@ is, so the class reads on: 96.5% of those breaks are clean, against 86.7% for
 tree-sitter and 88.1% before the pairing asked the indentation. What a broken
 file costs is measured too: `checker.ts` with a `)` or `}` deleted, or a `(`
 or `{` typed, from once to at every place there is one, reads its outline in
-0.03 to 0.13 s, against 0.07 to 0.91 s for tree-sitter
+0.03 to 0.12 s, against 0.07 to 0.89 s for tree-sitter
 ([evidence](docs/evidence/recovery-cost-checker-ts.json),
 `bench/recovery_cost.py`).
 

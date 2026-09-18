@@ -136,9 +136,9 @@ tree-sitter の tsx 文法は Excalidraw のテスト 2 ファイルに構文エ
 
 | 1,000 編集の中央値 | gramide | tree-sitter | 参考: 全文パース |
 |---|---:|---:|---:|
-| `compiler/parser.ts`(540 KB) | 18 µs | 120 µs | 9.0 ms |
-| `compiler/checker.ts`(3.1 MB、うち 2.9 MB が 1 つの関数) | 75 µs | 563 µs | 55 ms |
-| Excalidraw `components/App.tsx`(465 KB) | 16 µs | 221 µs | 9.3 ms |
+| `compiler/parser.ts`(540 KB) | 15 µs | 120 µs | 9.1 ms |
+| `compiler/checker.ts`(3.1 MB、うち 2.9 MB が 1 つの関数) | 54 µs | 561 µs | 58 ms |
+| Excalidraw `components/App.tsx`(465 KB) | 13 µs | 221 µs | 9.4 ms |
 
 `checker.ts` はキー入力ごとの全文パースが論外で、tree-sitter の再パースも最も遅いファイル。
 編集を含む最も深い項目は 1 つの文で、gramide が読むのはそれだけ。
@@ -186,7 +186,7 @@ tree-sitter の tsx 文法は Excalidraw のテスト 2 ファイルに構文エ
 メソッドと同じ深さにある次のメンバの手前で終わり、クラスは読み続けられる。その破壊の 96.5% が
 きれいで、tree-sitter は 86.7%、括弧の対応づけがインデントを見る前は 88.1% だった。壊れたファイルの
 コストも測ってある。`checker.ts` から `)` か `}` を消す、または `(` か `{` を打つ。1 回から打てる場所
-すべてまでの outline は 0.03〜0.13 秒、tree-sitter は 0.07〜0.91 秒
+すべてまでの outline は 0.03〜0.12 秒、tree-sitter は 0.07〜0.89 秒
 ([証拠](docs/evidence/recovery-cost-checker-ts.json)、`bench/recovery_cost.py`)。
 
 ## 作り
