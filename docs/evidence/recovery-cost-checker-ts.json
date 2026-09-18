@@ -2,37 +2,183 @@
  "file": "checker.ts",
  "bytes": 3067971,
  "seed": 3,
- "rows": [
-  {
-   "parens_deleted": 0,
-   "gramide_seconds": 0.072,
-   "tree_sitter_seconds": 0.138,
-   "gramide_outline_lines": 2650
-  },
-  {
-   "parens_deleted": 50,
-   "gramide_seconds": 0.125,
-   "tree_sitter_seconds": 0.141,
-   "gramide_outline_lines": 2650
-  },
-  {
-   "parens_deleted": 100,
-   "gramide_seconds": 0.134,
-   "tree_sitter_seconds": 0.143,
-   "gramide_outline_lines": 2650
-  },
-  {
-   "parens_deleted": 200,
-   "gramide_seconds": 2.078,
-   "tree_sitter_seconds": 0.146,
-   "gramide_outline_lines": 2925
-  },
-  {
-   "parens_deleted": 500,
-   "gramide_seconds": 7.639,
-   "tree_sitter_seconds": 0.242,
-   "gramide_outline_lines": 2898
-  }
- ],
+ "kinds": {
+  "delete )": [
+   {
+    "breaks": 0,
+    "gramide_seconds": 0.078,
+    "tree_sitter_seconds": 0.148,
+    "gramide_outline_lines": 2650
+   },
+   {
+    "breaks": 1,
+    "gramide_seconds": 0.099,
+    "tree_sitter_seconds": 0.15,
+    "gramide_outline_lines": 2650
+   },
+   {
+    "breaks": 10,
+    "gramide_seconds": 0.104,
+    "tree_sitter_seconds": 0.154,
+    "gramide_outline_lines": 2650
+   },
+   {
+    "breaks": 100,
+    "gramide_seconds": 0.1,
+    "tree_sitter_seconds": 0.153,
+    "gramide_outline_lines": 2650
+   },
+   {
+    "breaks": 1000,
+    "gramide_seconds": 0.102,
+    "tree_sitter_seconds": 0.357,
+    "gramide_outline_lines": 2649
+   },
+   {
+    "breaks": 10000,
+    "gramide_seconds": 0.129,
+    "tree_sitter_seconds": 0.477,
+    "gramide_outline_lines": 2599
+   },
+   {
+    "breaks": 31938,
+    "gramide_seconds": 0.12,
+    "tree_sitter_seconds": 0.454,
+    "gramide_outline_lines": 2549
+   }
+  ],
+  "delete }": [
+   {
+    "breaks": 0,
+    "gramide_seconds": 0.078,
+    "tree_sitter_seconds": 0.146,
+    "gramide_outline_lines": 2650
+   },
+   {
+    "breaks": 1,
+    "gramide_seconds": 0.097,
+    "tree_sitter_seconds": 0.147,
+    "gramide_outline_lines": 2650
+   },
+   {
+    "breaks": 10,
+    "gramide_seconds": 0.079,
+    "tree_sitter_seconds": 0.146,
+    "gramide_outline_lines": 1815
+   },
+   {
+    "breaks": 100,
+    "gramide_seconds": 0.08,
+    "tree_sitter_seconds": 0.146,
+    "gramide_outline_lines": 1815
+   },
+   {
+    "breaks": 1000,
+    "gramide_seconds": 0.042,
+    "tree_sitter_seconds": 0.139,
+    "gramide_outline_lines": 565
+   },
+   {
+    "breaks": 10000,
+    "gramide_seconds": 0.032,
+    "tree_sitter_seconds": 0.072,
+    "gramide_outline_lines": 252
+   },
+   {
+    "breaks": 10455,
+    "gramide_seconds": 0.037,
+    "tree_sitter_seconds": 0.101,
+    "gramide_outline_lines": 303
+   }
+  ],
+  "insert (": [
+   {
+    "breaks": 0,
+    "gramide_seconds": 0.077,
+    "tree_sitter_seconds": 0.148,
+    "gramide_outline_lines": 2650
+   },
+   {
+    "breaks": 1,
+    "gramide_seconds": 0.077,
+    "tree_sitter_seconds": 0.146,
+    "gramide_outline_lines": 2650
+   },
+   {
+    "breaks": 10,
+    "gramide_seconds": 0.098,
+    "tree_sitter_seconds": 0.15,
+    "gramide_outline_lines": 2650
+   },
+   {
+    "breaks": 100,
+    "gramide_seconds": 0.103,
+    "tree_sitter_seconds": 0.159,
+    "gramide_outline_lines": 2646
+   },
+   {
+    "breaks": 1000,
+    "gramide_seconds": 0.112,
+    "tree_sitter_seconds": 0.398,
+    "gramide_outline_lines": 2525
+   },
+   {
+    "breaks": 10000,
+    "gramide_seconds": 0.13,
+    "tree_sitter_seconds": 0.487,
+    "gramide_outline_lines": 2069
+   },
+   {
+    "breaks": 224949,
+    "gramide_seconds": 0.056,
+    "tree_sitter_seconds": 0.369,
+    "gramide_outline_lines": 0
+   }
+  ],
+  "insert {": [
+   {
+    "breaks": 0,
+    "gramide_seconds": 0.075,
+    "tree_sitter_seconds": 0.144,
+    "gramide_outline_lines": 2650
+   },
+   {
+    "breaks": 1,
+    "gramide_seconds": 0.076,
+    "tree_sitter_seconds": 0.145,
+    "gramide_outline_lines": 2650
+   },
+   {
+    "breaks": 10,
+    "gramide_seconds": 0.096,
+    "tree_sitter_seconds": 0.144,
+    "gramide_outline_lines": 2651
+   },
+   {
+    "breaks": 100,
+    "gramide_seconds": 0.099,
+    "tree_sitter_seconds": 0.213,
+    "gramide_outline_lines": 2661
+   },
+   {
+    "breaks": 1000,
+    "gramide_seconds": 0.126,
+    "tree_sitter_seconds": 0.205,
+    "gramide_outline_lines": 2689
+   },
+   {
+    "breaks": 10000,
+    "gramide_seconds": 0.099,
+    "tree_sitter_seconds": 0.337,
+    "gramide_outline_lines": 1318
+   },
+   {
+    "breaks": 224949,
+    "gramide_seconds": 0.121,
+    "tree_sitter_seconds": 0.906,
+    "gramide_outline_lines": 358
+   }
+  ]
+ },
  "intact_lines": 2650
 }

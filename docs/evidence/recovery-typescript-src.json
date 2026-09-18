@@ -22,76 +22,76 @@
   "total": {
    "breaks": 2588,
    "baseline": 104120,
-   "kept": 102273,
-   "lost_touching": 308,
-   "lost_collateral": 1539,
-   "spurious": 217,
-   "clean_breaks": 2465,
+   "kept": 103271,
+   "lost_touching": 62,
+   "lost_collateral": 787,
+   "spurious": 35,
+   "clean_breaks": 2540,
    "no_error_reported": 2588,
-   "error_nodes": 18813
+   "error_nodes": 3012
   },
   "by_break": [
    {
     "breaks": 697,
     "baseline": 26033,
-    "kept": 25773,
-    "lost_touching": 82,
-    "lost_collateral": 178,
-    "spurious": 21,
-    "clean_breaks": 675,
+    "kept": 25982,
+    "lost_touching": 31,
+    "lost_collateral": 20,
+    "spurious": 9,
+    "clean_breaks": 684,
     "no_error_reported": 697,
-    "error_nodes": 4292
+    "error_nodes": 1020
    },
    {
     "breaks": 607,
     "baseline": 26028,
-    "kept": 25038,
-    "lost_touching": 137,
-    "lost_collateral": 853,
-    "spurious": 191,
-    "clean_breaks": 535,
+    "kept": 25443,
+    "lost_touching": 3,
+    "lost_collateral": 582,
+    "spurious": 24,
+    "clean_breaks": 586,
     "no_error_reported": 607,
-    "error_nodes": 5675
+    "error_nodes": 704
    },
    {
     "breaks": 587,
     "baseline": 26026,
-    "kept": 25974,
-    "lost_touching": 22,
-    "lost_collateral": 30,
-    "spurious": 1,
-    "clean_breaks": 584,
+    "kept": 25847,
+    "lost_touching": 7,
+    "lost_collateral": 172,
+    "spurious": 0,
+    "clean_breaks": 582,
     "no_error_reported": 587,
-    "error_nodes": 4589
+    "error_nodes": 585
    },
    {
     "breaks": 697,
     "baseline": 26033,
-    "kept": 25488,
-    "lost_touching": 67,
-    "lost_collateral": 478,
-    "spurious": 4,
-    "clean_breaks": 671,
+    "kept": 25999,
+    "lost_touching": 21,
+    "lost_collateral": 13,
+    "spurious": 2,
+    "clean_breaks": 688,
     "no_error_reported": 697,
-    "error_nodes": 4257
+    "error_nodes": 703
    }
   ],
   "worst": [
    [
-    234,
+    255,
     0,
     "harness/fourslashImpl.ts",
-    "insert (",
-    27213,
-    645
+    "delete }",
+    143725,
+    3072
    ],
    [
-    114,
+    159,
     0,
     "server/session.ts",
-    "delete }",
-    84805,
-    1928
+    "delete )",
+    165056,
+    3503
    ],
    [
     112,
@@ -102,14 +102,6 @@
     232
    ],
    [
-    99,
-    0,
-    "harness/fourslashImpl.ts",
-    "delete }",
-    143725,
-    3072
-   ],
-   [
     91,
     0,
     "server/project.ts",
@@ -118,44 +110,52 @@
     2174
    ],
    [
-    88,
-    1,
-    "harness/fourslashInterfaceImpl.ts",
-    "insert {",
-    10139,
-    282
-   ],
-   [
-    84,
-    0,
-    "services/types.ts",
-    "insert (",
-    27768,
-    616
-   ],
-   [
-    66,
-    6,
-    "testRunner/unittests/helpers/virtualFileSystemWithWatch.ts",
-    "delete }",
-    33945,
-    847
-   ],
-   [
-    63,
-    0,
-    "services/textChanges.ts",
-    "insert (",
-    19628,
-    556
-   ],
-   [
     36,
     0,
     "harness/incrementalUtils.ts",
     "delete }",
     2364,
     46
+   ],
+   [
+    32,
+    0,
+    "compiler/watch.ts",
+    "delete }",
+    10630,
+    300
+   ],
+   [
+    12,
+    0,
+    "testRunner/compilerRunner.ts",
+    "insert {",
+    2817,
+    82
+   ],
+   [
+    10,
+    0,
+    "jsTyping/jsTyping.ts",
+    "delete }",
+    12307,
+    281
+   ],
+   [
+    9,
+    0,
+    "testRunner/unittests/helpers/tsc.ts",
+    "delete }",
+    17048,
+    339
+   ],
+   [
+    7,
+    0,
+    "testRunner/unittests/canWatch.ts",
+    "delete }",
+    8994,
+    162
    ]
   ]
  },
@@ -300,8 +300,8 @@
    ]
   ]
  },
- "both_lost_collateral": 55,
- "only_gramide_lost_collateral": 48,
- "only_tree_sitter_lost_collateral": 79,
- "seconds": 48.5
+ "both_lost_collateral": 8,
+ "only_gramide_lost_collateral": 27,
+ "only_tree_sitter_lost_collateral": 126,
+ "seconds": 50.4
 }

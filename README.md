@@ -197,20 +197,21 @@ appears ([evidence](docs/evidence/recovery-typescript-src.json), [how it recover
 
 | TypeScript `src/`: 697 files, 2,588 breaks | gramide | tree-sitter |
 |---|---:|---:|
-| declarations kept, all breaks | 98.2% | 99.0% |
-| clean breaks (nothing lost beyond the break, nothing invented) | 95.2% | 94.6% |
-| clean breaks, `insert {` | 96.8% | 96.4% |
-| clean breaks, `delete }` | 88.1% | 86.7% |
-| clean breaks, `delete )` | 99.5% | 98.8% |
-| clean breaks, `insert (` | 96.3% | 96.1% |
+| declarations kept, all breaks | 99.2% | 99.0% |
+| clean breaks (nothing lost beyond the break, nothing invented) | 98.1% | 94.6% |
+| clean breaks, `insert {` | 98.1% | 96.4% |
+| clean breaks, `delete }` | 96.5% | 86.7% |
+| clean breaks, `delete )` | 99.1% | 98.8% |
+| clean breaks, `insert (` | 98.7% | 96.1% |
 
-Ahead on every kind of break. The `)` deleted inside a member's head, which
-once cost the class every member after it, is read with the `)` taken as there
-where the member failed. tree-sitter still keeps slightly more declarations in
-total, on a `}` deleted from a method, where the class body runs on. What a
-heavily broken file costs is measured too: `checker.ts` with 100 `)` deleted
-reads its outline in 0.13 s, with 500 in 7.64 s, against tree-sitter's
-0.24 s ([evidence](docs/evidence/recovery-cost-checker-ts.json),
+Ahead on every kind of break, and on declarations kept. A `}` deleted from a
+method ends the method's body before the next member, indented as the method
+is, so the class reads on: 96.5% of those breaks are clean, against 86.7% for
+tree-sitter and 88.1% before the pairing asked the indentation. What a broken
+file costs is measured too: `checker.ts` with a `)` or `}` deleted, or a `(`
+or `{` typed, from once to at every place there is one, reads its outline in
+0.03 to 0.13 s, against 0.07 to 0.91 s for tree-sitter
+([evidence](docs/evidence/recovery-cost-checker-ts.json),
 `bench/recovery_cost.py`).
 
 ## How it is written
